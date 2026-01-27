@@ -1,0 +1,78 @@
+---
+title: "Additional Sync Controls: Backup and Force"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Additional Sync Controls: Backup and Force}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(syncdr)
+```
+
+## Synchronizing Using Additional Options
+
+To retain more control over the synchronization process, you can utilize two additional options available for all synchronization functions: backup and force.
+
+-   **Backup Option**: Setting `backup = TRUE` will create a backup (copy) of the right directory before performing the synchronization. This backup is stored in the location specified by `backup_dir`. If `backup_dir` is not provided, the backup will be saved in a temporary directory (`tempdir`). This ensures that you can revert to the previous state if needed
+
+-   **Force** **Option**: By default, `force = TRUE`, make all functions proceed directly with the synchronization without user's confirmation. However, to avoid unintended changes to your directories, you can set `force = FALSE`. This way the function will first display a preview of the proposed actions, including which files will be copied and which will be deleted. You will be prompted to confirm whether you wish to proceed with these actions. Synchronization will only continue if you agree; otherwise, it will be aborted, and no changes will be made to the directories.
+
+For example, suppose you are performing a full asymmetric synchronization of your, say, left and right directories. This type of synchronization entails that certain files will be copied over to the right directory, as well as that certain files will be deleted from it. 
+
+To maintain greater control over the process, you can allow the function to perform the synchronization while simultaneously storing a copy of the original directory before any changes occur. This way, you can revert to the original if needed.
+
+```{r, setup2}
+
+# generate toy directories
+e     <- toy_dirs()
+
+.syncdrenv.1 <- syncdr:::copy_temp_environment()
+
+# Get left and right directories' paths 
+left  <- .syncdrenv.1$left
+right <- .syncdrenv.1$right
+
+sync_status <- compare_directories(left, right)
+
+# call sync function
+full_asym_sync_to_right(sync_status = sync_status,
+                        backup      = TRUE)
+
+
+```
+
+Another option is to visualize a preliminary check, before the synchronization takes place. This can be done taking advantage of the force option. Note that prompt for user confirmation will work when you run the function interactively in your R session. However, this interactive prompt will not be functional within this article. 
+
+
+```{r include = FALSE}
+
+.syncdrenv.2 <- copy_temp_environment()
+
+# Get left and right directories' paths 
+left  <- .syncdrenv.2$left
+right <- .syncdrenv.2$right
+
+sync_status <- compare_directories(left, right)
+
+
+```
+
+```{r force}
+
+full_asym_sync_to_right(sync_status = sync_status,
+                        force      = FALSE)
+
+#You will need to type `no` or 'cancel' to stop the synchronization
+
+
+```
+

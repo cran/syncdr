@@ -1,0 +1,81 @@
+---
+title: "Visualizations"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Visualizations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+old_options <- options(width = 200)
+options(width = 200)
+#devtools::load_all(".")
+```
+
+## Visualize synchronization status
+
+When comparing your directories, say `left` and `right`, use `display_sync_status()` for an effective comparison visualization.
+
+As with any function from `syncdr`, you will have to call `compare_directories()` first:
+
+### Example when comparing directories by date & content
+
+```{r setup}
+
+library(syncdr)
+
+# Create syncdr env with left and right directories
+.syncdrenv =toy_dirs()
+
+# Get left and right directories' paths 
+left  <- .syncdrenv$left
+right <- .syncdrenv$right
+
+```
+
+
+```{r}
+
+sync_status <- compare_directories(left, 
+                                   right,
+                                   by_content = TRUE)
+
+```
+
+`display_sync_status()` allows you to visualize the synchronization status of either (1) common files or (2) non common files, as you can see in the examples below:
+
+```{r dtable}
+
+display_sync_status(sync_status$common_files,
+                    left_path  = left,
+                    right_path = right)
+display_sync_status(sync_status$non_common_files,
+                    left_path  = left,
+                    right_path = right)
+
+```
+
+## Visualize directories structure
+
+Moreover, you have the option to utilize `display_dir_tree()` for a swift overview of your directory(ies) structure, whether for a single directory or both simultaneously.
+
+```{r}
+
+# Tree structure or right directory
+display_dir_tree(path_left = left)
+
+# Tree structure of left directory
+display_dir_tree(path_right = right)
+
+# Tree structure of both 
+display_dir_tree(path_left = left, path_right = right, )
+
+# Restore options
+options(old_options)
+```

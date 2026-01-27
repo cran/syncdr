@@ -1,0 +1,174 @@
+---
+title: "Asymmetric Synchronization Functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Asymmetric Synchronization Functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+```
+
+```{r}
+library(syncdr)
+#devtools::load_all(".")
+
+# Create .syncdrenv
+.syncdrenv = toy_dirs()
+
+# Get left and right directories' paths 
+left  <- .syncdrenv$left
+right <- .syncdrenv$right
+
+```
+
+This article covers functions designed for ***asymmetric synchronization*** between two directories.
+
+## What is asymmetric synchronization?
+
+This is a **one-way** synchronization: you have a *master/leader* directory, and you want changes made there to be reflected in a *secondary/follower* directory.
+
+⏭️ For all synchronization functions below, note that synchronization occurs ***from left to right.*** This mean that the right directory will **mirror** the contents of the left directory.
+
+**Key Points:**
+
+When using these synchronization functions, you have two options for providing inputs:
+
+1.  Specify the paths for both the left and right directories, and set the `by_date` and `by_content` arguments as desired (default: `by_date = TRUE` and `by_content = FALSE`).
+
+2.  First, use the `compare_directories()` function to generate a sync_status object. Then, provide this object as input to the synchronization function. The `by_date` and `by_content` arguments will be automatically determined based on the `sync_status`.
+
+## Types of asymmetric synchronization
+
+`syncdr` allows to perform a ***specific set of asymmetric synchronization actions***, so that you can choose which one to execute depending on your needs
+
++--------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+
+| ::: {style="color:#0070FF"}                                        | ::: {style="color:#0070FF"}                                                                                                                                            | ::: {style="color:#0070FF"}                                                                                                     |
+| Type of synchronization                                            | Actions on common files                                                                                                                                                | Actions on non-common files                                                                                                     |
+| :::                                                                | :::                                                                                                                                                                    | :::                                                                                                                             |
++====================================================================+========================================================================================================================================================================+=================================================================================================================================+
+| Full asymmetric synchronization:                                   | -   If comparing by date only (`by_date = TRUE`): Copy files that are newer in the left directory to the right directory.                                              | -   Copy to the right directory those files that exist only in the left directory.                                              |
+|                                                                    | -   If comparing by date and content (`by_date = TRUE` and `by_content = TRUE`): Copy files that are newer and different in the left directory to the right directory. |                                                                                                                                 |
+| **`full_asym_sync_to_right()`**                                    | -   If comparing by content only (`by_content = TRUE`): Copy files that are different in the left directory to the right directory                                     | -   Delete from the right directory those files that are exclusive in the right directory (i.e., missing in the left directory) |
++--------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+
+| Partial asymmetric synchronization -common files:                  | -   if `by_date = TRUE` only: copy files that are newer in left to right                                                                                               | no actions                                                                                                                      |
+|                                                                    |                                                                                                                                                                        |                                                                                                                                 |
+| **`common_files_asym_sync_to_right()`**                            | -   if `by date = TRUE` and `by_content = TRUE`: copy files that are newer and different in left to right                                                              |                                                                                                                                 |
+|                                                                    |                                                                                                                                                                        |                                                                                                                                 |
+|                                                                    | -   if `by_content = TRUE` only: copy files that are different in left to right                                                                                        |                                                                                                                                 |
++--------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+
+| Full asymmetric synchronization of non common files                | no actions                                                                                                                                                             | -   copy those files that are only in left to right                                                                             |
+|                                                                    |                                                                                                                                                                        |                                                                                                                                 |
+| **`update_missing_files_asym_to_right()`**                         |                                                                                                                                                                        | -   delete in right those files that are only in right (i.e., files "only in right" or in other words missing in left)          |
++--------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+
+| Partial asymmetric asymmetric synchronization of non common files: | no actions                                                                                                                                                             | -   copy those files that are only in left to right                                                                             |
+|                                                                    |                                                                                                                                                                        |                                                                                                                                 |
+| **`partial_update_missing_files_asym_to_right()`**                 |                                                                                                                                                                        | -   keep in right those files that are only in right (i.e., files 'missing in left')                                            |
++--------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+
+
+: Types of asymmetric synchronization
+
+Let's see them in actions through the examples below:
+
+##### \*️⃣ **Note: `verbose = TRUE`**
+
+When executing any synchronization, you have the option to enable verbose mode by setting `verbose = TRUE`. This will display the tree structure of *both* directories BEFORE and AFTER the synchronization
+
+**1 - Full asymmetric synchronization:**
+
+```{r}
+
+# With leader/master directory being the left directory 
+# Option 1 
+full_asym_sync_to_right(left_path  = left,
+                        right_path = right,
+                        by_content = TRUE)
+# Option 2
+sync_status <- compare_directories(left_path  = left,
+                                   right_path = right,
+                                   by_content = TRUE)
+
+full_asym_sync_to_right(sync_status = sync_status)
+
+# With leader/master directory being the right directory 
+sync_status <- compare_directories(left_path  = right,  #notice args changing here
+                                   right_path = left,
+                                   by_content = TRUE)
+
+full_asym_sync_to_right(sync_status = sync_status)
+```
+
+**2 - Partial asymmetric synchronization -common files:**
+
+```{r include=FALSE}
+
+.syncdrenv.2 <- syncdr:::copy_temp_environment()
+
+# Get left and right directories' paths 
+left  <- .syncdrenv.2$left
+right <- .syncdrenv.2$right
+```
+
+```{r}
+
+sync_status <- compare_directories(left_path  = left,
+                                   right_path = right)
+
+common_files_asym_sync_to_right(sync_status = sync_status)
+```
+
+**3 - Full asymmetric synchronization -non common files:**
+
+```{r include=FALSE}
+
+.syncdrenv.3 <- copy_temp_environment()
+
+# Get left and right directories' paths 
+left  <- .syncdrenv.3$left
+right <- .syncdrenv.3$right
+
+```
+
+```{r}
+
+sync_status <- compare_directories(left_path  = left,
+                                   right_path = right)
+
+update_missing_files_asym_to_right(sync_status = sync_status)
+
+```
+
+**4 - Partial asymmetric synchronization -non common files:**
+
+```{r include=FALSE}
+
+.syncdrenv.4 <- copy_temp_environment()
+
+# Get left and right directories' paths 
+left  <- .syncdrenv.4$left
+right <- .syncdrenv.4$right
+
+```
+
+```{r}
+
+sync_status <- compare_directories(left_path  = left,
+                                   right_path = right)
+
+partial_update_missing_files_asym_to_right(sync_status = sync_status)
+
+```
+
+## Synchronizing Using Additional Options
+
+To retain more control over the synchronization process, you can utilize two additional options available for all synchronization functions: backup and force.
+
+-   **Backup Option**: Setting `backup = TRUE` will create a backup (copy) of the right directory before performing the synchronization. This backup is stored in the location specified by `backup_dir`. If `backup_dir` is not provided, the backup will be saved in a temporary directory (`tempdir`). This ensures that you can revert to the previous state if needed
+
+-   **Force** **Option**: By default, force = TRUE, which means the function will proceed directly with the synchronization without any interruptions. If you set force = FALSE, the function will first display a preview of the proposed actions, including which files will be copied and which will be deleted. You will be prompted to confirm whether you wish to proceed with these actions. Synchronization will only continue if you agree; otherwise, it will be aborted, and no changes will be made to the directories.

@@ -1,0 +1,148 @@
+---
+title: "Symmetric Synchronization"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Symmetric Synchronization}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+#devtools::load_all(".")
+
+```
+
+```{r setup}
+library(syncdr)
+
+# Create .syncdrenv
+.syncdrenv = toy_dirs()
+
+# Get left and right directories' paths 
+left  <- .syncdrenv$left
+right <- .syncdrenv$right
+```
+
+This article covers functions designed for symmetric synchronization between two directories.
+
+## What is symmetric synchronization?
+
+This is a **two-way** synchronization: this means that you compare both directories and update each other to reflect the latest changes: If a file is added, modified, or deleted in one directory, the corresponding action is taken in the other directory. This approach is useful when you want both directories to be always **up-to-date** with the latest changes, regardless of where those changes originate.
+
+**To keep in mind:**
+
+When calling these synchronization functions, you can provide inputs in two *alternative* ways:
+
+1.  Specify paths of both left and right directories, as well as the \`by_date\` and \`by_content\` arguments as you wish the synchronization to be performed (if not specified, by default \`by_date = TRUE\` and \`by_content\` = FALSE) *OR*
+
+2.  First call the workhorse function \`compare_directories()\` to obtain the sync_status object. Then, provide it as input to the synchronization function. You do not need to specify the 'by_date' and 'by_content' arguments, as they will automatically be determined depending on the 'sync_status'.
+
+## Types of symmetric synchronization
+
+Similar to its asymmetric counterpart, `syncdr` enables the execution of ***specific symmetric synchronizations*** with predefined options, allowing you to select the most suitable function based on your requirements.
+
++---------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------+
+| ::: {style="color:#0070FF"}     | ::: {style="color:#0070FF"}                                                                                                                                         | ::: {style="color:#0070FF"}                                                           |
+| Type of synchronization         | Actions on common files                                                                                                                                             | Actions on non-common files                                                           |
+| :::                             | :::                                                                                                                                                                 | :::                                                                                   |
++=================================+=====================================================================================================================================================================+=======================================================================================+
+| Full symmetric synchronization: | -   if `by_date = TRUE` only:                                                                                                                                       | if a file exists in one but not in the other directory, it is copied over accordingly |
+|                                 |                                                                                                                                                                     |                                                                                       |
+| **`full_symmetric_sync()`**     |     -   If the file in one directory is newer than the corresponding file in the other directory it will be copied over to update the older version                 |                                                                                       |
+|                                 |                                                                                                                                                                     |                                                                                       |
+|                                 |     -   If modification dates are the same, no change is made                                                                                                       |                                                                                       |
+|                                 |                                                                                                                                                                     |                                                                                       |
+|                                 | -   if `by_date = TRUE` and `by_content = TRUE`:                                                                                                                    |                                                                                       |
+|                                 |                                                                                                                                                                     |                                                                                       |
+|                                 |     -   If the file in one directory is newer AND different than the corresponding file in the other directory, it will be copied over to update the older version. |                                                                                       |
+|                                 |                                                                                                                                                                     |                                                                                       |
+|                                 |     -   If modification dates/contents are the same, no change is made                                                                                              |                                                                                       |
+|                                 |                                                                                                                                                                     |                                                                                       |
+|                                 | -   if `by_content = TRUE` only: no action                                                                                                                          |                                                                                       |
++---------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------+
+|                                 | -   if `by_date = TRUE` only:                                                                                                                                       | No changes are made:                                                                  |
+|                                 |                                                                                                                                                                     |                                                                                       |
+|                                 |     -   If the file in one directory is newer than the corresponding file in the other directory, it will be copied over to update the older version.               | -   keep in right files that are only in right                                        |
+|                                 |                                                                                                                                                                     |                                                                                       |
+|                                 |     -   If modification dates are the same, no action is executed                                                                                                   | -   keep in left those that are only in left                                          |
+|                                 |                                                                                                                                                                     |                                                                                       |
+|                                 | -   if `by_date = TRUE` and `by_content = TRUE`:                                                                                                                    |                                                                                       |
+|                                 |                                                                                                                                                                     |                                                                                       |
+|                                 |     -   If the file in one directory is newer AND different than the corresponding file in the other directory, it will be copied over to update the older version  |                                                                                       |
+|                                 |                                                                                                                                                                     |                                                                                       |
+|                                 |     -   If modification dates/contents are the same, nothing is done                                                                                                |                                                                                       |
+|                                 |                                                                                                                                                                     |                                                                                       |
+|                                 | -   if `by_content = TRUE` only: no action                                                                                                                          |                                                                                       |
++---------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------+
+
+: Types of symmetric synchronization
+
+Let's consider the following examples:
+
+##### \*️⃣ **Note: `verbose = TRUE`**
+
+As with asymmetric synchronization, also here you have the option to enable verbose mode by setting `verbose = TRUE`. This will display the tree structure of *both* directories BEFORE and AFTER the synchronization.
+
+**1 - Full symmetric synchronization:**
+
+**When comparing directories by date and content:**
+
+```{r}
+
+sync_status <- compare_directories(left_path  = left,
+                                   right_path = right,
+                                   by_content = TRUE)
+
+# Providing left and right paths object
+# full_symmetric_sync(left, right)
+
+# Providing sync_status object
+full_symmetric_sync(sync_status = sync_status)
+```
+
+**When comparing directories by date only:**
+
+```{r include = FALSE}
+
+.syncdrenv.1 <- copy_temp_environment()
+
+# Get left and right directories' paths 
+left  <- .syncdrenv.1$left
+right <- .syncdrenv.1$right
+
+```
+
+```{r}
+
+sync_status <- compare_directories(left_path  = left,
+                                   right_path = right)
+
+# Example with left and right paths 
+full_symmetric_sync(left_path = left,
+                    right_path = right)
+```
+
+**2 - Partial symmetric synchronization:**
+
+```{r include = FALSE}
+
+.syncdrenv.2 <- copy_temp_environment()
+
+# Get left and right directories' paths 
+left  <- .syncdrenv.2$left
+right <- .syncdrenv.2$right
+
+```
+
+```{r}
+
+sync_status <- compare_directories(left_path  = left,
+                                   right_path = right)
+
+partial_symmetric_sync_common_files(sync_status = sync_status)
+```

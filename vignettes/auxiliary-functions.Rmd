@@ -1,0 +1,54 @@
+---
+title: "Auxiliary Functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Auxiliary Functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(syncdr)
+#devtools::load_all(".")
+```
+
+`syncdr` provides some auxiliary functions that might come in handy to better understand the content of your directories, even before taking certain synchronization actions.
+
+To develop some examples, let's start by calling `toy_dirs()`. This auxiliary function creates toy directories within the syncdr environment, containing samples common files as well as files exclusive to either directory. These toy directories are deleted every time a new session is started. 
+```{r setup}
+
+# Create .syncdrenv with left and right directories
+.syncdrenv =toy_dirs()
+
+# Get left and right directories' paths 
+left  <- .syncdrenv$left
+right <- .syncdrenv$right
+
+```
+
+Together with `toy_dirs()`, you might want to use `copy_temp_environment()`, in order to copy the original environment and play with the various {syncdr} functions on this copied environment rather than the original one which remains untouched. 
+
+**Search for duplicate files**
+
+One useful auxiliary function is **`search_duplicates()`**, designed to generate a list of duplicate files within your directory. Duplicate files are identified based on identical content, regardless of their filenames. By default, `verbose = TRUE` will show you the list of duplicate files. To return it invisibly, set `verbose = FALSE`. In this latter case, a message will still pop up to let you know when the identification of duplicates is completed.
+
+```{r}
+
+# example
+search_duplicates(right, verbose = TRUE)
+```
+
+**Save sync status file**
+
+Another auxiliary function is `save_sync_status`, which comes in handy to track and document the status of files within a directory over time. This function generates a summary of file synchronization details, including file hashes and modification dates, for each file in the specified directory. The summary is saved as a file within a _syncdr subdirectory, so that sync status information is easily accessible.
+
+The `save_sync_status` function supports various save formats (e.g., .fst, .csv, .Rds), depending on the available packages and user-specified options.
+
+```{r ssfile, eval = FALSE}
+save_sync_status(dir_path = right)
+```
