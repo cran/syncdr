@@ -11,10 +11,11 @@ full_asym_sync_to_right(
   by_date = TRUE,
   by_content = FALSE,
   recurse = TRUE,
-  force = TRUE,
-  delete_in_right = TRUE,
+  force = FALSE,
+  delete_in_right = FALSE,
   backup = FALSE,
   backup_dir = "temp_dir",
+  overwrite = TRUE,
   verbose = getOption("syncdr.verbose")
 )
 }
@@ -33,17 +34,20 @@ full_asym_sync_to_right(
 in the destination folder. If FALSE, files are copied to the top level of the destination folder
 without creating subdirectories if they do not exist.}
 
-\item{force}{Logical. If TRUE (by default), directly perform synchronization of the directories.
-If FALSE, Displays a preview of actions and prompts the user for confirmation before proceeding. Synchronization is aborted if the user does not agree.}
+\item{force}{Logical. If FALSE (default), displays a preview of actions and
+prompts the user for confirmation before proceeding. Synchronization
+is aborted if the user does not agree. If TRUE, directly performs
+synchronization without prompting.}
 
-\item{delete_in_right}{Logical. If TRUE (default), files that exist only in the
-right directory (i.e., absent from the left directory) are deleted during
-synchronization. If FALSE, no files are removed from the right directory,
-even if they are exclusive to it.}
+\item{delete_in_right}{Logical. If FALSE (default), files that exist only in the
+right directory (i.e., absent from the left directory) are preserved during
+synchronization. If TRUE, those files are deleted from the right directory.}
 
 \item{backup}{Logical. If TRUE, creates a backup of the right directory before synchronization. The backup is stored in the location specified by \code{backup_dir}.}
 
 \item{backup_dir}{Path to the directory where the backup of the original right directory will be stored. If not specified, the backup is stored in temporary directory (\code{tempdir}).}
+
+\item{overwrite}{Logical. If TRUE (default), existing files at the destination are overwritten. If FALSE, existing destination files are preserved and the copy is skipped.}
 
 \item{verbose}{logical. If TRUE, display directory tree before and after synchronization. Default is FALSE}
 }

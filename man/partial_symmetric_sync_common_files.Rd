@@ -11,9 +11,10 @@ partial_symmetric_sync_common_files(
   by_date = TRUE,
   by_content = FALSE,
   recurse = TRUE,
-  force = TRUE,
+  force = FALSE,
   backup = FALSE,
   backup_dir = "temp_dir",
+  overwrite = TRUE,
   verbose = getOption("syncdr.verbose")
 )
 }
@@ -33,12 +34,16 @@ If recurse is TRUE: when copying a file from source folder to destination folder
 If the sub(directory) where the file is located does not exist in destination folder (or you are not sure), set recurse to FALSE,
 and the file will be copied at the top level}
 
-\item{force}{Logical. If TRUE (by default), directly perform synchronization of the directories.
-If FALSE, displays a preview of actions and prompts the user for confirmation before proceeding. Synchronization is aborted if the user does not agree.}
+\item{force}{Logical. If FALSE (default), displays a preview of actions and
+prompts the user for confirmation before proceeding.
+Synchronization is aborted if the user does not agree.
+If TRUE, directly performs synchronization without prompting.}
 
 \item{backup}{Logical. If TRUE, creates a backup of the right directory before synchronization. The backup is stored in the location specified by \code{backup_dir}.}
 
 \item{backup_dir}{Path to the directory where the backup of the original right directory will be stored. If not specified, the backup is stored in temporary directory (\code{tempdir}).}
+
+\item{overwrite}{Logical. If TRUE (default), existing files in the destination are overwritten. If FALSE, existing files are not overwritten.}
 
 \item{verbose}{logical. If TRUE, display directory tree before and after synchronization. Default is FALSE}
 }

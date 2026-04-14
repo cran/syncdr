@@ -9,12 +9,13 @@ update_missing_files_asym_to_right(
   right_path = NULL,
   sync_status = NULL,
   recurse = TRUE,
-  force = TRUE,
+  force = FALSE,
   backup = FALSE,
   backup_dir = "temp_dir",
   copy_to_right = TRUE,
-  delete_in_right = TRUE,
+  delete_in_right = FALSE,
   exclude_delete = NULL,
+  overwrite = TRUE,
   verbose = getOption("syncdr.verbose")
 )
 }
@@ -30,8 +31,10 @@ If recurse is TRUE: when copying a file from source folder to destination folder
 If the sub(directory) where the file is located does not exist in destination folder (or you are not sure), set recurse to FALSE,
 and the file will be copied at the top level}
 
-\item{force}{Logical. If TRUE (by default), directly perform synchronization of the directories.
-If FALSE, Displays a preview of actions and prompts the user for confirmation before proceeding. Synchronization is aborted if the user does not agree.}
+\item{force}{Logical. If FALSE (default), displays a preview of actions and
+prompts the user for confirmation before proceeding.
+Synchronization is aborted if the user does not agree.
+If TRUE, directly performs synchronization without prompting.}
 
 \item{backup}{Logical. If TRUE, creates a backup of the right directory before synchronization. The backup is stored in the location specified by \code{backup_dir}.}
 
@@ -41,12 +44,16 @@ If FALSE, Displays a preview of actions and prompts the user for confirmation be
 If TRUE, files that exist only in the left directory are copied to the right directory.
 If FALSE, such files are not copied and remain absent from the right directory.}
 
-\item{delete_in_right}{Logical, default is TRUE.
+\item{delete_in_right}{Logical, default is FALSE.
 If TRUE, files that exist only in the right directory (i.e., not present in the left) are deleted.
 If FALSE, these right-only files are preserved.}
 
-\item{exclude_delete}{Character vector of file names or dir names to protect from deletion.
-These files will be kept in the right directory even if \code{delete = TRUE}.}
+\item{exclude_delete}{Character vector of basenames or folder name segments to protect from
+deletion. These are matched against the file basename and each path segment — full paths
+are not supported. Files matching any element are kept in the right directory even if
+\code{delete_in_right = TRUE}.}
+
+\item{overwrite}{Logical. If TRUE (default), existing files at the destination are overwritten. If FALSE, existing destination files are preserved and the copy is skipped.}
 
 \item{verbose}{logical. If TRUE, display directory tree before and after synchronization. Default is FALSE}
 }

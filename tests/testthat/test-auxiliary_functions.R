@@ -266,4 +266,92 @@ test_that("search duplicates works as expected", {
 })
 
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Tests for VUL-01 / VUL-31: path-metacharacter safety in directory_info()
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+test_that("directory_info: wo_root is correct for paths with dots in dir name", {
+  # Dots are the most common metacharacter trigger: user.name, v1.0, etc.
+  base  <- fs::path_temp("di_dot_test")
+  dir_  <- fs::path(base, "user.name")
+  sub_  <- fs::path(dir_, "subdir")
+  fs::dir_create(sub_)
+  f1 <- fs::path(dir_, "report.csv")
+  f2 <- fs::path(sub_, "data.csv")
+  writeLines("a", f1)
+  writeLines("b", f2)
+  on.exit(fs::dir_delete(base), add = TRUE)
+
+  info <- directory_info(dir_)
+
+  # wo_root should be the path relative to dir_, not a regex-stripped mess
+  expected_roots <- sort(c(
+    as.character(fs::path_rel(f1, start = dir_)),
+    as.character(fs::path_rel(f2, start = dir_))
+  ))
+  expect_equal(sort(as.character(info$wo_root)), expected_roots)
+})
+
+test_that("directory_info: wo_root is correct for paths with parentheses in dir name", {
+  base  <- fs::path_temp("di_paren_test")
+  dir_  <- fs::path(base, "data (copy)")
+  fs::dir_create(dir_)
+  f <- fs::path(dir_, "file.csv")
+  writeLines("x", f)
+  on.exit(fs::dir_delete(base), add = TRUE)
+
+  info <- directory_info(dir_)
+
+  expect_equal(as.character(info$wo_root), as.character(fs::path_rel(f, start = dir_)))
+})
+
+test_that("directory_info: wo_root is correct for paths with plus sign in dir name", {
+  base  <- fs::path_temp("di_plus_test")
+  dir_  <- fs::path(base, "project+files")
+  fs::dir_create(dir_)
+  f <- fs::path(dir_, "output.csv")
+  writeLines("y", f)
+  on.exit(fs::dir_delete(base), add = TRUE)
+
+  info <- directory_info(dir_)
+
+  expect_equal(as.character(info$wo_root), as.character(fs::path_rel(f, start = dir_)))
+})
+
+test_that("directory_info: wo_root is stable with trailing slash on dir", {
+  base  <- fs::path_temp("di_slash_test")
+  dir_  <- fs::path(base, "mydir")
+  fs::dir_create(dir_)
+  f <- fs::path(dir_, "file.csv")
+  writeLines("z", f)
+  on.exit(fs::dir_delete(base), add = TRUE)
+
+  # Call once with trailing slash (after path_norm it should be equivalent)
+  info_no_slash   <- directory_info(dir_)
+  info_with_slash <- directory_info(paste0(dir_, "/"))
+
+  # wo_root must be identical regardless of trailing slash
+  expect_equal(info_no_slash$wo_root, info_with_slash$wo_root)
+})
+
+test_that("compare_directories: files match correctly when dir names contain dots", {
+  base  <- fs::path_temp("cd_dot_test")
+  left_ <- fs::path(base, "v1.0", "left")
+  right_<- fs::path(base, "v1.0", "right")
+  fs::dir_create(left_)
+  fs::dir_create(right_)
+  writeLines("same", fs::path(left_, "common.csv"))
+  writeLines("same", fs::path(right_, "common.csv"))
+  writeLines("only_left", fs::path(left_, "extra.csv"))
+  on.exit(fs::dir_delete(base), add = TRUE)
+
+  result <- compare_directories(left_, right_)
+
+  # common.csv should be in common_files (not phantom non-common)
+  expect_equal(nrow(result$common_files), 1L)
+  # extra.csv should be the sole non-common file
+  expect_equal(nrow(result$non_common_files), 1L)
+})
+
+
 

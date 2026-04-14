@@ -379,8 +379,8 @@ can revert to the original if needed.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a></span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># generate toy directories</span></span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>e     <span class="ot">&lt;-</span> <span class="fu">toy_dirs</span>()</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt; ■■■■■■■■■                         27% | ETA:  9s</span></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■               60% | ETA:  6s</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt; ■■■■■■■                           20% | ETA:  8s</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt; ■■■■■■■■■■■■■■■■■                 53% | ETA:  7s</span></span>
 <span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>.syncdrenv<span class="fl">.1</span> <span class="ot">&lt;-</span> syncdr<span class="sc">:::</span><span class="fu">copy_temp_environment</span>()</span>
 <span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
@@ -393,7 +393,31 @@ can revert to the original if needed.</p>
 <span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co"># call sync function</span></span>
 <span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="fu">full_asym_sync_to_right</span>(<span class="at">sync_status =</span> sync_status,</span>
 <span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>                        <span class="at">backup      =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; ✔ synchronized</span></span></code></pre></div>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; Warning: Backup stored in `tempdir()` - this location is ephemeral.</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; ℹ The backup will be lost when the R session ends.</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co">#&gt; ℹ Supply a permanent `backup_dir` to keep a persistent backup.</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; |Files               |Action        |</span></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; |:-------------------|:-------------|</span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt; |/C/C1_duplicate.Rds |To be deleted |</span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; |/D/D3.Rds           |To be deleted |</span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; |/E/E1.Rds           |To be deleted |</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; |/E/E2.Rds           |To be deleted |</span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; |/E/E3.Rds           |To be deleted |</span></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co">#&gt; These files will be COPIED (overwriting if present) to right </span></span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co">#&gt; |Files     |Action       |</span></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co">#&gt; |:---------|:------------|</span></span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="co">#&gt; |/D/D1.Rds |To be copied |</span></span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="co">#&gt; |/D/D2.Rds |To be copied |</span></span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co">#&gt; |/A/A1.Rds |To be copied |</span></span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="co">#&gt; |/A/A2.Rds |To be copied |</span></span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="co">#&gt; |/A/A3.Rds |To be copied |</span></span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a><span class="co">#&gt; |/B/B3.Rds |To be copied |</span></span>
+<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a><span class="co">#&gt; Do you want to proceed? Type your answer (Yes/no/cancel) </span></span>
+<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a><span class="co">#&gt; ✔ synchronized</span></span></code></pre></div>
 <p>Another option is to visualize a preliminary check, before the
 synchronization takes place. This can be done taking advantage of the
 force option. Note that prompt for user confirmation will work when you
@@ -402,7 +426,7 @@ interactive prompt will not be functional within this article.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">full_asym_sync_to_right</span>(<span class="at">sync_status =</span> sync_status,</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>                        <span class="at">force      =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; These files will be DELETED in right</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; |Files               |Action        |</span></span>
 <span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; |:-------------------|:-------------|</span></span>

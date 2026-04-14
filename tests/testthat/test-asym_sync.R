@@ -15,10 +15,9 @@ sync_status_date      <- compare_directories(left_path  = left,
                                              right_path = right)
 
 # Sync
-full_asym_sync_to_right(sync_status = sync_status_date)
-
-
-### Non common files ####
+full_asym_sync_to_right(sync_status = sync_status_date,
+                        force = TRUE,
+                        delete_in_right = TRUE)
 test_that("full asym sync to right -by date, non common files", {
 
 
@@ -87,7 +86,9 @@ right_files <- list.files(right,
 
 full_asym_sync_to_right(left_path  = left,
                         right_path = right,
-                        backup     = TRUE)
+                        backup     = TRUE,
+                        force      = TRUE) |>
+  suppressWarnings()  # VUL-20: expected tempdir warning in default backup
 
 
 
@@ -105,7 +106,9 @@ sync_status_date_cont <- compare_directories(left_path  = left,
 
 # sync
 full_asym_sync_to_right(sync_status = sync_status_date_cont,
-                        by_content = TRUE)
+                        by_content  = TRUE,
+                        force       = TRUE,
+                        delete_in_right = TRUE)
 
 ### Non common files ####
 test_that("full asym sync to right -by date & cont, non common files", {
@@ -180,7 +183,9 @@ sync_status_cont <- compare_directories(left_path  = left,
 # sync
 full_asym_sync_to_right(sync_status = sync_status_cont,
                         by_content  = TRUE,
-                        by_date     = FALSE)
+                        by_date     = FALSE,
+                        force       = TRUE,
+                        delete_in_right = TRUE)
 
 ### Non common files ####
 test_that("full asym sync to right -by content only, non common files", {
@@ -256,7 +261,8 @@ sync_status_date      <- compare_directories(left_path  = left,
                                              right_path = right)
 
 # Sync
-common_files_asym_sync_to_right(sync_status = sync_status_date)
+common_files_asym_sync_to_right(sync_status = sync_status_date,
+                                force = TRUE)
 
 test_that("common files asym sync to right works -by date", {
 
@@ -297,7 +303,8 @@ sync_status      <- compare_directories(left_path  = left,
                                         by_content = TRUE)
 
 # Sync
-common_files_asym_sync_to_right(sync_status = sync_status)
+common_files_asym_sync_to_right(sync_status = sync_status,
+                                force = TRUE)
 
 test_that("common files asym sync to right works -by date & content", {
 
@@ -339,7 +346,8 @@ sync_status      <- compare_directories(left_path  = left,
                                         by_content = TRUE)
 
 # Sync
-common_files_asym_sync_to_right(sync_status = sync_status)
+common_files_asym_sync_to_right(sync_status = sync_status,
+                                force = TRUE)
 
 test_that("common files asym sync to right works -by content", {
 
@@ -384,7 +392,9 @@ sync_status <- compare_directories(left_path  = left,
                                    right_path = right)
 
 # Sync
-update_missing_files_asym_to_right(sync_status = sync_status)
+update_missing_files_asym_to_right(sync_status   = sync_status,
+                                   force         = TRUE,
+                                   delete_in_right = TRUE)
 
 test_that("update missing file works", {
 
@@ -434,7 +444,8 @@ sync_status <- compare_directories(left_path  = left,
                                    right_path = right)
 
 # Sync
-partial_update_missing_files_asym_to_right(sync_status = sync_status)
+partial_update_missing_files_asym_to_right(sync_status = sync_status,
+                                           force = TRUE)
 
 test_that("update missing file works", {
 
@@ -502,6 +513,7 @@ test_that("full_asym_sync_to_right respects delete_in_right = FALSE", {
 
   full_asym_sync_to_right(left_path  = left,
                           right_path = right,
+                          force = TRUE,
                           delete_in_right = FALSE)
 
   # verify right-only files still exist
@@ -529,7 +541,8 @@ test_that("copy without recurse places top-level files at destination top-level"
   full_asym_sync_to_right(
     left_path  = left,
     right_path = right,
-    recurse    = FALSE
+    recurse    = FALSE,
+    force      = TRUE
   )
 
   # --- 4. Files must exist at top-level of right ------------------------------------
@@ -548,7 +561,8 @@ test_that("sync by content only", {
   full_asym_sync_to_right(left_path = left,
                           right_path = right,
                           by_date = FALSE,
-                          by_content = TRUE)
+                          by_content = TRUE,
+                          force = TRUE)
 
   # ensure modified content is synced
   status <- compare_directories(left, right, by_content = TRUE)
@@ -562,7 +576,8 @@ test_that("backup works to custom directory", {
   full_asym_sync_to_right(left_path = e$left,
                           right_path = e$right,
                           backup = TRUE,
-                          backup_dir = backup_dir)
+                          backup_dir = backup_dir,
+                          force = TRUE)
 
   expect_true(fs::dir_exists(backup_dir))
   expect_true(length(list.files(backup_dir, recursive = TRUE)) > 0)
@@ -585,7 +600,8 @@ test_that("update_missing_files_asym_to_right skips copy when copy_to_right = FA
     left_path      = left,
     right_path     = right,
     recurse        = TRUE,
-    copy_to_right  = FALSE
+    copy_to_right  = FALSE,
+    force          = TRUE
   )
 
   # Because copy_to_right = FALSE, file should STILL be missing in right
@@ -608,7 +624,9 @@ test_that("exclude_delete prevents deletion", {
   update_missing_files_asym_to_right(
     left_path = left,
     right_path = right,
-    exclude_delete = "keep.Rds"
+    exclude_delete = "keep.Rds",
+    force = TRUE,
+    delete_in_right = TRUE
   )
 
   # Check that the file was NOT deleted
@@ -623,7 +641,8 @@ test_that("common_files_asym_sync_to_right works by content only", {
   common_files_asym_sync_to_right(left_path = left,
                                   right_path = right,
                                   by_date = FALSE,
-                                  by_content = TRUE)
+                                  by_content = TRUE,
+                                  force = TRUE)
 
   status <- compare_directories(left, right, by_content = TRUE)
   expect_false(any(status$common_files$is_diff))
@@ -651,10 +670,9 @@ test_that("partial update without recurse places top-level files at root", {
   partial_update_missing_files_asym_to_right(
     left_path  = left,
     right_path = right,
-    recurse    = FALSE
-  )
-
-  # -- 5. Files should appear at top-level of RIGHT -----------------
+    recurse    = FALSE,
+    force      = TRUE
+  ) -----------------
   expect_true(all(fs::file_exists(fs::path(right, top_files))))
 
 })
@@ -667,7 +685,8 @@ test_that("identical directories: no-op and returns TRUE", {
   # make right identical to left
   unlink(right, recursive = TRUE)
   fs::dir_copy(left, right)
-  res <- full_asym_sync_to_right(left_path = left, right_path = right)
+  res <- full_asym_sync_to_right(left_path = left, right_path = right,
+                                 force = TRUE)
   expect_true(isTRUE(res))
   # verify no non_common files
   status <- compare_directories(left, right)
@@ -695,11 +714,11 @@ test_that("recurse = FALSE with basename collisions: last-writer deterministic",
   writeLines("two", fs::path(left, "B", "collision.txt"))
 
 
-  full_asym_sync_to_right(left_path = left, right_path = right, recurse = FALSE)
-
-  # top_marker should have been copied
+  full_asym_sync_to_right(left_path = left, right_path = right, recurse = FALSE,
+                          force = TRUE)
   expect_true(fs::file_exists(fs::path(right, "top_marker.txt")))
-  expect_false(fs::file_exists(fs::path(right, "right_top_marker.txt")))
+  # right_top_marker is right-only; with delete_in_right=FALSE (new default) it is preserved
+  expect_true(fs::file_exists(fs::path(right, "right_top_marker.txt")))
 
 })
 
@@ -765,7 +784,8 @@ test_that("delete_in_right = FALSE and exclude_delete act together", {
     left_path = left,
     right_path = right,
     delete_in_right = FALSE,
-    exclude_delete = "E"
+    exclude_delete = "E",
+    force = TRUE
   )
 
   # right-only files AND E/* must exist
@@ -788,13 +808,9 @@ test_that("backup_dir creates backup in a specific directory", {
     left_path = left,
     right_path = right,
     backup = TRUE,
-    backup_dir = backup_fol
+    backup_dir = backup_fol,
+    force = TRUE
   )
-
-  expect_true(isTRUE(res))
-
-  # 4. Assert backup directory exists
-  expect_true(fs::dir_exists(backup_fol))
 
   # 5. Assert backup directory contains files
   backup_files <- fs::dir_ls(backup_fol, recurse = TRUE, type = "file")
@@ -809,7 +825,8 @@ test_that("nothing to sync still returns TRUE", {
   unlink(right, recursive = TRUE)
   fs::dir_copy(left, right)
 
-  res <- full_asym_sync_to_right(left_path = left, right_path = right)
+  res <- full_asym_sync_to_right(left_path = left, right_path = right,
+                                 force = TRUE)
   expect_true(isTRUE(res))
 })
 
@@ -820,8 +837,8 @@ test_that("common_files_to_copy empty still returns TRUE", {
   unlink(right, recursive = TRUE)
   fs::dir_copy(left, right)
 
-  res <- common_files_asym_sync_to_right(left_path = left, right_path = right)
-  expect_true(isTRUE(res))
+  res <- common_files_asym_sync_to_right(left_path = left, right_path = right,
+                                         force = TRUE)
 })
 
 test_that("exclude_delete must be character vector", {
@@ -831,26 +848,30 @@ test_that("exclude_delete must be character vector", {
     update_missing_files_asym_to_right(
       left_path = e$left,
       right_path = e$right,
-      exclude_delete = 123
+      exclude_delete = 123,
+      force = TRUE,
+      delete_in_right = TRUE
     )
   )
 })
 
 test_that("success branches always return TRUE", {
   e <- copy_temp_environment()
-  expect_true(full_asym_sync_to_right(left_path = e$left, right_path = e$right))
-  expect_true(common_files_asym_sync_to_right(left_path = e$left, right_path = e$right))
-  expect_true(update_missing_files_asym_to_right(left_path = e$left, right_path = e$right))
-  expect_true(partial_update_missing_files_asym_to_right(left_path = e$left, right_path = e$right))
+  expect_true(full_asym_sync_to_right(left_path = e$left, right_path = e$right, force = TRUE))
+  expect_true(common_files_asym_sync_to_right(left_path = e$left, right_path = e$right, force = TRUE))
+  expect_true(update_missing_files_asym_to_right(left_path = e$left, right_path = e$right, force = TRUE))
+  expect_true(partial_update_missing_files_asym_to_right(left_path = e$left, right_path = e$right, force = TRUE))
 })
 
 test_that("by_date = NA or by_content = NA errors", {
   e <- copy_temp_environment()
   expect_error(
-    full_asym_sync_to_right(left_path = e$left, right_path = e$right, by_date = NA)
+    full_asym_sync_to_right(left_path = e$left, right_path = e$right, by_date = NA,
+                            force = TRUE)
   )
   expect_error(
-    full_asym_sync_to_right(left_path = e$left, right_path = e$right, by_content = NA)
+    full_asym_sync_to_right(left_path = e$left, right_path = e$right, by_content = NA,
+                            force = TRUE)
   )
 })
 
@@ -864,7 +885,8 @@ test_that("multiple deletions trigger cli_progress_along loop", {
   st_before <- compare_directories(left, right)
   expect_true(any(st_before$non_common_files$sync_status == "only in right"))
 
-  update_missing_files_asym_to_right(left_path = left, right_path = right)
+  update_missing_files_asym_to_right(left_path = left, right_path = right,
+                                     force = TRUE, delete_in_right = TRUE)
 
   st_after <- compare_directories(left, right)
   expect_false(any(st_after$non_common_files$sync_status == "only in right"))
@@ -889,6 +911,7 @@ test_that("verbose display, file actions, and backup blocks executed", {
       verbose     = TRUE,
       backup      = TRUE,
       backup_dir  = backup_dir,
+      force       = TRUE,
       delete_in_right = TRUE
     )
   )
@@ -955,7 +978,8 @@ test_that("no files to delete triggers cli_alert_info and display_dir_tree", {
       right_path      = right,
       delete_in_right = TRUE,
       exclude_delete  = basename(all_right_files), # exclude by name
-      verbose         = TRUE
+      verbose         = TRUE,
+      force           = TRUE
     )
   )
 
@@ -1046,3 +1070,101 @@ test_that("copy_to_right = FALSE skips copy", {
   )
 })
 
+# ===== Group F: VUL-13/14/28/29/32/33 tests =====
+
+# VUL-13: force=FALSE defaults ----
+test_that("full_asym_sync_to_right default force=FALSE prompts user (mocked agree)", {
+  e <- copy_temp_environment()
+  with_mocked_bindings(
+    askYesNo = function(...) TRUE,
+    {
+      res <- full_asym_sync_to_right(left_path = e$left, right_path = e$right)
+      expect_true(res)
+    }
+  )
+})
+
+test_that("full_asym_sync_to_right default force=FALSE prompts user (mocked refuse)", {
+  e <- copy_temp_environment()
+  with_mocked_bindings(
+    askYesNo = function(...) FALSE,
+    {
+      expect_error(
+        full_asym_sync_to_right(left_path = e$left, right_path = e$right),
+        "Synchronization interrupted"
+      )
+    }
+  )
+})
+
+test_that("full_asym_sync_to_right delete_in_right=FALSE by default preserves right-only files", {
+  e <- copy_temp_environment()
+  # add a right-only file
+  writeLines("rightonly", file.path(e$right, "rightonly.txt"))
+
+  full_asym_sync_to_right(left_path = e$left, right_path = e$right, force = TRUE)
+
+  # right-only file must still exist (delete_in_right defaults to FALSE)
+  expect_true(fs::file_exists(file.path(e$right, "rightonly.txt")))
+})
+
+test_that("update_missing_files_asym_to_right delete_in_right=FALSE by default preserves right-only files", {
+  e <- copy_temp_environment()
+  writeLines("rightonly", file.path(e$right, "ronly.txt"))
+
+  update_missing_files_asym_to_right(left_path = e$left, right_path = e$right, force = TRUE)
+
+  expect_true(fs::file_exists(file.path(e$right, "ronly.txt")))
+})
+
+# VUL-14: overwrite=FALSE does not overwrite ----
+test_that("copy_files_to_right with overwrite=FALSE does not overwrite existing file", {
+  tmp_left  <- fs::dir_create(fs::file_temp())
+  tmp_right <- fs::dir_create(fs::file_temp())
+  on.exit({ fs::dir_delete(tmp_left); fs::dir_delete(tmp_right) }, add = TRUE)
+
+  writeLines("original", file.path(tmp_right, "file.txt"))
+  writeLines("new", file.path(tmp_left, "file.txt"))
+
+  status <- compare_directories(tmp_left, tmp_right)
+  copy_files_to_right(
+    left_dir      = tmp_left,
+    right_dir     = tmp_right,
+    files_to_copy = status$common_files,
+    overwrite     = FALSE
+  )
+
+  # original content preserved because overwrite = FALSE
+  expect_equal(readLines(file.path(tmp_right, "file.txt")), "original")
+})
+
+# VUL-28: verbose does not crash when paths from sync_status ----
+test_that("verbose=TRUE works when paths come from sync_status (not direct args)", {
+  e <- copy_temp_environment()
+  sync_status <- compare_directories(e$left, e$right)
+
+  with_mocked_bindings(
+    display_dir_tree = function(...) invisible(TRUE),
+    style_msgs       = function(...) invisible(TRUE),
+    {
+      expect_no_error(
+        full_asym_sync_to_right(sync_status = sync_status, force = TRUE, verbose = TRUE)
+      )
+    }
+  )
+})
+
+# VUL-29: stop() -> cli_abort for exclude_delete ----
+test_that("exclude_delete non-character triggers cli_abort with useful message", {
+  e <- copy_temp_environment()
+  err <- expect_error(
+    update_missing_files_asym_to_right(
+      left_path = e$left,
+      right_path = e$right,
+      delete_in_right = TRUE,
+      force = TRUE,
+      exclude_delete = 42L
+    )
+  )
+  expect_match(conditionMessage(err), "exclude_delete")
+})

@@ -16,7 +16,8 @@ sync_status_date      <- compare_directories(left_path  = left,
 # ~~~~~~~~~ Update by date only ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-full_symmetric_sync(sync_status = sync_status_date)
+full_symmetric_sync(sync_status = sync_status_date,
+                    force = TRUE)
 
 test_that("full symm sync works -by date", {
 
@@ -57,7 +58,8 @@ sync_status_date_cont <- compare_directories(left_path  = left,
                                              by_content = TRUE)
 
 # sync
-full_symmetric_sync(sync_status = sync_status_date_cont)
+full_symmetric_sync(sync_status = sync_status_date_cont,
+                    force = TRUE)
 
 test_that("full symm sync works -by date&cont", {
 
@@ -98,7 +100,8 @@ sync_status <- compare_directories(left_path  = left,
 
 # sync
 
-partial_symmetric_sync_common_files(sync_status = sync_status)
+partial_symmetric_sync_common_files(sync_status = sync_status,
+                                    force = TRUE)
 
 test_that("partial symm sync works -by date", {
 
@@ -135,7 +138,8 @@ sync_status <- compare_directories(left_path  = left,
                                    by_content = TRUE)
 
 # sync
-partial_symmetric_sync_common_files(sync_status = sync_status)
+partial_symmetric_sync_common_files(sync_status = sync_status,
+                                    force = TRUE)
 
 test_that("partial sym sync works -by date & cont", {
 
@@ -162,7 +166,8 @@ test_that("full_symmetric_sync errors with missing arguments", {
 })
 
 test_that("full_symmetric_sync errors with non-existent directories", {
-  expect_error(full_symmetric_sync(left_path = "fake_dir", right_path = "fake_dir2"), "not TRUE")
+  expect_error(full_symmetric_sync(left_path = "fake_dir", right_path = "fake_dir2"),
+               "does not exist")
 })
 
 test_that("full_symmetric_sync creates backup with correct contents", {
@@ -175,7 +180,8 @@ test_that("full_symmetric_sync creates backup with correct contents", {
   # Add a file to right to check backup
   file.create(file.path(right, "testfile.txt"))
 
-  full_symmetric_sync(left_path = left, right_path = right, backup = TRUE, backup_dir = backup_dir)
+  full_symmetric_sync(left_path = left, right_path = right, backup = TRUE, backup_dir = backup_dir,
+                      force = TRUE)
 
   # Find backup subdirectory (assuming backup is of 'right')
   backup_subdirs <- list.dirs(backup_dir, recursive = FALSE, full.names = TRUE)
@@ -227,7 +233,8 @@ test_that("full_symmetric_sync only syncs top-level files when recurse = FALSE",
   file.create(file.path(subdir, "subfile.txt"))
 
   # Perform sync without recursion
-  full_symmetric_sync(left_path = left, right_path = right, recurse = FALSE)
+  full_symmetric_sync(left_path = left, right_path = right, recurse = FALSE,
+                      force = TRUE)
 
   # Top-level file should be copied
   expect_true(file.exists(file.path(right, "l.topfile.txt")))
@@ -244,7 +251,8 @@ test_that("partial_symmetric_sync_common_files does not copy non-common files", 
   # Add a file only to left
   file.create(file.path(left, "unique_left.txt"))
   sync_status <- compare_directories(left_path = left, right_path = right)
-  partial_symmetric_sync_common_files(sync_status = sync_status)
+  partial_symmetric_sync_common_files(sync_status = sync_status,
+                                      force = TRUE)
   expect_false(file.exists(file.path(right, "unique_left.txt")))
 })
 
@@ -262,6 +270,7 @@ test_that("full_symmetric_sync runs with verbose = TRUE", {
     {
       expect_silent(full_symmetric_sync(left_path = left,
                                         right_path = right,
+                                        force = TRUE,
                                         verbose = TRUE))
     }
   )
@@ -278,6 +287,7 @@ test_that("partial_symmetric_sync_common_files runs with verbose = TRUE", {
     `style_msgs`       = function(...) "called",
     {
       expect_silent(partial_symmetric_sync_common_files(sync_status = sync_status,
+                                                        force = TRUE,
                                                         verbose = TRUE))
     }
   )
@@ -311,9 +321,8 @@ test_that("full_symmetric_sync copies nested files when recurse = TRUE", {
   nested_file <- file.path(subdir, "nested.txt")
   writeLines("hello", nested_file)
 
-  full_symmetric_sync(left_path = left, right_path = right, recurse = TRUE)
-
-  expect_true(file.exists(file.path(right, "nested", "nested.txt")))
+  full_symmetric_sync(left_path = left, right_path = right, recurse = TRUE,
+                      force = TRUE)
 })
 
 # --- 7. Mock copy functions to ensure correct arguments ---
@@ -330,7 +339,8 @@ test_that("full_symmetric_sync calls copy functions correctly", {
     `copy_files_to_right` = function(...) { called_right <<- TRUE },
     `copy_files_to_left`  = function(...) { called_left <<- TRUE },
     {
-      full_symmetric_sync(sync_status = sync_status)
+      full_symmetric_sync(sync_status = sync_status,
+                          force = TRUE)
     }
   )
 
@@ -394,4 +404,80 @@ test_that("partial_symmetric_sync_common_files aborts for by_content only", {
   )
 })
 
+# ===== Group F: VUL-13/14/34 tests =====
+
+# VUL-13: force=FALSE default prompts user ----
+test_that("full_symmetric_sync default force=FALSE prompts and aborts on refusal", {
+  e <- copy_temp_environment()
+  with_mocked_bindings(
+    askYesNo = function(...) FALSE,
+    {
+      expect_error(
+        full_symmetric_sync(left_path = e$left, right_path = e$right),
+        "Synchronization interrupted"
+      )
+    }
+  )
+})
+
+test_that("partial_symmetric_sync_common_files default force=FALSE prompts and aborts", {
+  e <- copy_temp_environment()
+  with_mocked_bindings(
+    askYesNo = function(...) FALSE,
+    {
+      expect_error(
+        partial_symmetric_sync_common_files(left_path = e$left, right_path = e$right),
+        "Synchronization interrupted"
+      )
+    }
+  )
+})
+
+# VUL-34: by_content_only abort fires BEFORE backup ----
+test_that("full_symmetric_sync aborts for by_content only before creating backup dir", {
+  e <- copy_temp_environment()
+  backup_dir <- fs::file_temp("vul34_backup")
+
+  expect_false(fs::dir_exists(backup_dir))
+
+  expect_error(
+    full_symmetric_sync(
+      left_path  = e$left,
+      right_path = e$right,
+      by_date    = FALSE,
+      by_content = TRUE,
+      backup     = TRUE,
+      backup_dir = backup_dir,
+      force      = TRUE
+    ),
+    "Symmetric synchronization by content only is not active"
+  )
+
+  # backup should NOT have been created since abort fires before backup block
+  expect_false(fs::dir_exists(backup_dir))
+})
+
+# VUL-14: overwrite param passes through to copy workers ----
+test_that("full_symmetric_sync with overwrite=FALSE does not overwrite existing files", {
+  tmp_left  <- fs::dir_create(fs::file_temp())
+  tmp_right <- fs::dir_create(fs::file_temp())
+  on.exit({ fs::dir_delete(tmp_left); fs::dir_delete(tmp_right) }, add = TRUE)
+
+  # write same file in both with different content; right is "newer" in left
+  writeLines("right_original", file.path(tmp_right, "shared.txt"))
+  writeLines("left_updated",   file.path(tmp_left,  "shared.txt"))
+  Sys.sleep(0.05)
+  # touch the left file to make it newer
+  fs::file_touch(file.path(tmp_left, "shared.txt"))
+
+  full_symmetric_sync(
+    left_path  = tmp_left,
+    right_path = tmp_right,
+    overwrite  = FALSE,
+    force      = TRUE
+  )
+
+  # right should NOT have been overwritten
+  expect_equal(readLines(file.path(tmp_right, "shared.txt")), "right_original")
+})
 

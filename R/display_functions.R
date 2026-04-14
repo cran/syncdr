@@ -10,10 +10,15 @@ display_sync_status <- function(sync_status_files,
                                 left_path,
                                 right_path) {
 
-  # clean display of paths
+  # Clean display of paths.
+  # Normalise the root paths before stripping to handle trailing slashes and
+  # mixed separators. Use fixed = TRUE so that metacharacters in path names
+  # (e.g. '.', '+', '(') are treated as literals, not regex patterns.
+  left_path_norm  <- fs::path_norm(left_path)
+  right_path_norm <- fs::path_norm(right_path)
   sync_status_files <- sync_status_files |>
-    fmutate(path_left = gsub(left_path, "", path_left)) |>
-    fmutate(path_right = gsub(right_path, "", path_right))
+    fmutate(path_left  = gsub(left_path_norm,  "", fs::path_norm(path_left),  fixed = TRUE)) |>
+    fmutate(path_right = gsub(right_path_norm, "", fs::path_norm(path_right), fixed = TRUE))
 
   # Build DT table
   DT::datatable(sync_status_files,
@@ -81,14 +86,14 @@ display_dir_tree <- function(path_left  = NULL,
   if (!is.null(path_left)) {
     style_msgs(color_name = "pink",
                text = paste0("(\u2190)", "Left directory structure:\n"))
-    fs::dir_tree(path_left)
+    fs::dir_tree(path_left, recurse = recurse)
 
   }
 
   if (!is.null(path_right)) {
     style_msgs(color_name = "pink",
                text = paste0("(\u2192)", "Right directory structure:\n"))
-    fs::dir_tree(path_right)
+    fs::dir_tree(path_right, recurse = recurse)
 
   }
 
@@ -124,10 +129,11 @@ display_file_actions <- function(path_to_files,
 
   colnames(path_to_files) <- c("Paths", "Action")
 
+  # Use fixed = TRUE and normalise paths to safely strip the root prefix
+  # regardless of metacharacters or trailing slashes in the directory path.
+  dir_norm <- fs::path_norm(directory)
   path_to_files <- path_to_files |>
-    fmutate(Paths = gsub(directory,
-                       "",
-                       Paths))
+    fmutate(Paths = gsub(dir_norm, "", fs::path_norm(Paths), fixed = TRUE))
 
   # Print the table
   print(

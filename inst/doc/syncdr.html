@@ -2896,8 +2896,8 @@ functionalities.</p>
 <pre class="r"><code>
 # Create syncdr env with left and right directories
 .syncdrenv =toy_dirs()
-#&gt; ■■■■■■■■■                         27% | ETA:  9s
-#&gt; ■■■■■■■■■■■■■■■■■                 53% | ETA:  6s
+#&gt; ■■■■■■■■■                         27% | ETA:  8s
+#&gt; ■■■■■■■■■■■■■■■■■■■               60% | ETA:  5s
 
 # Get left and right directories&#39; paths 
 left  &lt;- .syncdrenv$left
@@ -2913,7 +2913,7 @@ However, you can also specify the number of levels to recurse using the
 display_dir_tree(path_left  = left,
                  path_right = right)
 #&gt; (←)Left directory structure:
-#&gt; C:/Users/wb621604/AppData/Local/Temp/Rtmpmg13ZH/left
+#&gt; C:/Users/wb621604/AppData/Local/Temp/RtmpspeU5x/left
 #&gt; ├── A
 #&gt; │   ├── A1.Rds
 #&gt; │   ├── A2.Rds
@@ -2936,7 +2936,7 @@ display_dir_tree(path_left  = left,
 #&gt;     ├── E2.Rds
 #&gt;     └── E3.Rds
 #&gt; (→)Right directory structure:
-#&gt; C:/Users/wb621604/AppData/Local/Temp/Rtmpmg13ZH/right
+#&gt; C:/Users/wb621604/AppData/Local/Temp/RtmpspeU5x/right
 #&gt; ├── A
 #&gt; │   ├── A1.Rds
 #&gt; │   ├── A2.Rds
@@ -3079,30 +3079,30 @@ sync_status_date &lt;- compare_directories(left,
 sync_status_date
 #&gt; 
 #&gt; ── Synchronization Summary ─────────────────────────────────────────────────────
-#&gt; • Left Directory: &#39;C:/Users/wb621604/AppData/Local/Temp/Rtmpmg13ZH/left&#39;
-#&gt; • Right Directory: &#39;C:/Users/wb621604/AppData/Local/Temp/Rtmpmg13ZH/right&#39;
+#&gt; • Left Directory: &#39;C:/Users/wb621604/AppData/Local/Temp/RtmpspeU5x/left&#39;
+#&gt; • Right Directory: &#39;C:/Users/wb621604/AppData/Local/Temp/RtmpspeU5x/right&#39;
 #&gt; • Total Common Files: 16
 #&gt; • Total Non-common Files: 0
 #&gt; • Compare files by: date
 #&gt; 
 #&gt; ── Common files ────────────────────────────────────────────────────────────────
 #&gt;                        path modification_time_left modification_time_right
-#&gt; 1            /left/A/A1.Rds    2026-01-23 16:57:04     2026-01-23 16:56:54
-#&gt; 2            /left/A/A2.Rds    2026-01-23 16:57:07     2026-01-23 16:56:57
-#&gt; 3            /left/A/A3.Rds    2026-01-23 16:57:10     2026-01-23 16:57:00
-#&gt; 4            /left/B/B1.Rds    2026-01-23 16:57:04     2026-01-23 16:57:05
-#&gt; 5            /left/B/B2.Rds    2026-01-23 16:57:07     2026-01-23 16:57:08
-#&gt; 6            /left/B/B3.Rds    2026-01-23 16:57:10     2026-01-23 16:57:00
-#&gt; 7            /left/C/C1.Rds    2026-01-23 16:57:05     2026-01-23 16:57:05
-#&gt; 8  /left/C/C1_duplicate.Rds    2026-01-23 16:57:05     2026-01-23 16:56:55
-#&gt; 9            /left/C/C2.Rds    2026-01-23 16:57:08     2026-01-23 16:57:09
-#&gt; 10           /left/C/C3.Rds    2026-01-23 16:57:10     2026-01-23 16:57:11
-#&gt; 11           /left/D/D1.Rds    2026-01-23 16:57:07     2026-01-23 16:57:06
-#&gt; 12           /left/D/D2.Rds    2026-01-23 16:57:10     2026-01-23 16:57:09
-#&gt; 13           /left/D/D3.Rds    2026-01-23 16:57:01     2026-01-23 16:57:11
-#&gt; 14           /left/E/E1.Rds    2026-01-23 16:56:57     2026-01-23 16:57:07
-#&gt; 15           /left/E/E2.Rds    2026-01-23 16:57:00     2026-01-23 16:57:10
-#&gt; 16           /left/E/E3.Rds    2026-01-23 16:57:01     2026-01-23 16:57:11
+#&gt; 1            /left/A/A1.Rds    2026-04-13 17:21:27     2026-04-13 17:21:17
+#&gt; 2            /left/A/A2.Rds    2026-04-13 17:21:30     2026-04-13 17:21:20
+#&gt; 3            /left/A/A3.Rds    2026-04-13 17:21:33     2026-04-13 17:21:23
+#&gt; 4            /left/B/B1.Rds    2026-04-13 17:21:27     2026-04-13 17:21:28
+#&gt; 5            /left/B/B2.Rds    2026-04-13 17:21:30     2026-04-13 17:21:31
+#&gt; 6            /left/B/B3.Rds    2026-04-13 17:21:33     2026-04-13 17:21:23
+#&gt; 7            /left/C/C1.Rds    2026-04-13 17:21:28     2026-04-13 17:21:28
+#&gt; 8  /left/C/C1_duplicate.Rds    2026-04-13 17:21:28     2026-04-13 17:21:18
+#&gt; 9            /left/C/C2.Rds    2026-04-13 17:21:31     2026-04-13 17:21:32
+#&gt; 10           /left/C/C3.Rds    2026-04-13 17:21:33     2026-04-13 17:21:34
+#&gt; 11           /left/D/D1.Rds    2026-04-13 17:21:30     2026-04-13 17:21:29
+#&gt; 12           /left/D/D2.Rds    2026-04-13 17:21:33     2026-04-13 17:21:32
+#&gt; 13           /left/D/D3.Rds    2026-04-13 17:21:24     2026-04-13 17:21:34
+#&gt; 14           /left/E/E1.Rds    2026-04-13 17:21:20     2026-04-13 17:21:30
+#&gt; 15           /left/E/E2.Rds    2026-04-13 17:21:23     2026-04-13 17:21:33
+#&gt; 16           /left/E/E3.Rds    2026-04-13 17:21:24     2026-04-13 17:21:34
 #&gt;     modified
 #&gt; 1       left
 #&gt; 2       left
@@ -3142,29 +3142,29 @@ sync_status_date_content &lt;- compare_directories(left,
 sync_status_date_content
 #&gt; 
 #&gt; ── Synchronization Summary ─────────────────────────────────────────────────────
-#&gt; • Left Directory: &#39;C:/Users/wb621604/AppData/Local/Temp/Rtmpmg13ZH/left&#39;
-#&gt; • Right Directory: &#39;C:/Users/wb621604/AppData/Local/Temp/Rtmpmg13ZH/right&#39;
+#&gt; • Left Directory: &#39;C:/Users/wb621604/AppData/Local/Temp/RtmpspeU5x/left&#39;
+#&gt; • Right Directory: &#39;C:/Users/wb621604/AppData/Local/Temp/RtmpspeU5x/right&#39;
 #&gt; • Total Common Files: 15
 #&gt; • Total Non-common Files: 0
 #&gt; • Compare files by: date &amp; content
 #&gt; 
 #&gt; ── Common files ────────────────────────────────────────────────────────────────
 #&gt;                        path modification_time_left modification_time_right
-#&gt; 1            /left/A/A1.Rds    2026-01-23 16:57:04     2026-01-23 16:56:54
-#&gt; 2            /left/A/A2.Rds    2026-01-23 16:57:07     2026-01-23 16:56:57
-#&gt; 3            /left/A/A3.Rds    2026-01-23 16:57:10     2026-01-23 16:57:00
-#&gt; 4            /left/B/B1.Rds    2026-01-23 16:57:04     2026-01-23 16:57:05
-#&gt; 5            /left/B/B2.Rds    2026-01-23 16:57:07     2026-01-23 16:57:08
-#&gt; 6            /left/B/B3.Rds    2026-01-23 16:57:10     2026-01-23 16:57:00
-#&gt; 7  /left/C/C1_duplicate.Rds    2026-01-23 16:57:05     2026-01-23 16:56:55
-#&gt; 8            /left/C/C2.Rds    2026-01-23 16:57:08     2026-01-23 16:57:09
-#&gt; 9            /left/C/C3.Rds    2026-01-23 16:57:10     2026-01-23 16:57:11
-#&gt; 10           /left/D/D1.Rds    2026-01-23 16:57:07     2026-01-23 16:57:06
-#&gt; 11           /left/D/D2.Rds    2026-01-23 16:57:10     2026-01-23 16:57:09
-#&gt; 12           /left/D/D3.Rds    2026-01-23 16:57:01     2026-01-23 16:57:11
-#&gt; 13           /left/E/E1.Rds    2026-01-23 16:56:57     2026-01-23 16:57:07
-#&gt; 14           /left/E/E2.Rds    2026-01-23 16:57:00     2026-01-23 16:57:10
-#&gt; 15           /left/E/E3.Rds    2026-01-23 16:57:01     2026-01-23 16:57:11
+#&gt; 1            /left/A/A1.Rds    2026-04-13 17:21:27     2026-04-13 17:21:17
+#&gt; 2            /left/A/A2.Rds    2026-04-13 17:21:30     2026-04-13 17:21:20
+#&gt; 3            /left/A/A3.Rds    2026-04-13 17:21:33     2026-04-13 17:21:23
+#&gt; 4            /left/B/B1.Rds    2026-04-13 17:21:27     2026-04-13 17:21:28
+#&gt; 5            /left/B/B2.Rds    2026-04-13 17:21:30     2026-04-13 17:21:31
+#&gt; 6            /left/B/B3.Rds    2026-04-13 17:21:33     2026-04-13 17:21:23
+#&gt; 7  /left/C/C1_duplicate.Rds    2026-04-13 17:21:28     2026-04-13 17:21:18
+#&gt; 8            /left/C/C2.Rds    2026-04-13 17:21:31     2026-04-13 17:21:32
+#&gt; 9            /left/C/C3.Rds    2026-04-13 17:21:33     2026-04-13 17:21:34
+#&gt; 10           /left/D/D1.Rds    2026-04-13 17:21:30     2026-04-13 17:21:29
+#&gt; 11           /left/D/D2.Rds    2026-04-13 17:21:33     2026-04-13 17:21:32
+#&gt; 12           /left/D/D3.Rds    2026-04-13 17:21:24     2026-04-13 17:21:34
+#&gt; 13           /left/E/E1.Rds    2026-04-13 17:21:20     2026-04-13 17:21:30
+#&gt; 14           /left/E/E2.Rds    2026-04-13 17:21:23     2026-04-13 17:21:33
+#&gt; 15           /left/E/E3.Rds    2026-04-13 17:21:24     2026-04-13 17:21:34
 #&gt;    modified       sync_status
 #&gt; 1      left different content
 #&gt; 2      left different content
@@ -3204,8 +3204,8 @@ sync_status_content &lt;- compare_directories(left,
 sync_status_content
 #&gt; 
 #&gt; ── Synchronization Summary ─────────────────────────────────────────────────────
-#&gt; • Left Directory: &#39;C:/Users/wb621604/AppData/Local/Temp/Rtmpmg13ZH/left&#39;
-#&gt; • Right Directory: &#39;C:/Users/wb621604/AppData/Local/Temp/Rtmpmg13ZH/right&#39;
+#&gt; • Left Directory: &#39;C:/Users/wb621604/AppData/Local/Temp/RtmpspeU5x/left&#39;
+#&gt; • Right Directory: &#39;C:/Users/wb621604/AppData/Local/Temp/RtmpspeU5x/right&#39;
 #&gt; • Total Common Files: 16
 #&gt; • Total Non-common Files: 0
 #&gt; • Compare files by: content
@@ -3253,108 +3253,108 @@ compare_directories(left,
                     by_date    = FALSE,
                     by_content = TRUE,
                     verbose    = TRUE)
-#&gt; ⠙ cli-159588-449
+#&gt; ⠙ cli-159588-457
 #&gt; ✔ A1.Rds [5ms]
 #&gt; 
-#&gt; ⠙ cli-159588-449
-#&gt; ✔ A2.Rds [4ms]
+#&gt; ⠙ cli-159588-457
+#&gt; ✔ A2.Rds [5ms]
 #&gt; 
-#&gt; ⠙ cli-159588-449
-#&gt; ✔ A3.Rds [4ms]
-#&gt; 
-#&gt; ⠙ cli-159588-449
-#&gt; ✔ B1.Rds [4ms]
-#&gt; 
-#&gt; ⠙ cli-159588-449
-#&gt; ✔ B2.Rds [4ms]
-#&gt; 
-#&gt; ⠙ cli-159588-449
-#&gt; ✔ B3.Rds [4ms]
-#&gt; 
-#&gt; ⠙ cli-159588-449
-#&gt; ✔ C1.Rds [4ms]
-#&gt; 
-#&gt; ⠙ cli-159588-449
-#&gt; ✔ C1_duplicate.Rds [4ms]
-#&gt; 
-#&gt; ⠙ cli-159588-449
-#&gt; ✔ C2.Rds [4ms]
-#&gt; 
-#&gt; ⠙ cli-159588-449
-#&gt; ✔ C3.Rds [4ms]
-#&gt; 
-#&gt; ⠙ cli-159588-449
-#&gt; ✔ D1.Rds [4ms]
-#&gt; 
-#&gt; ⠙ cli-159588-449
-#&gt; ✔ D2.Rds [4ms]
-#&gt; 
-#&gt; ⠙ cli-159588-449
-#&gt; ✔ D3.Rds [4ms]
-#&gt; 
-#&gt; ⠙ cli-159588-449
-#&gt; ✔ E1.Rds [4ms]
-#&gt; 
-#&gt; ⠙ cli-159588-449
-#&gt; ✔ E2.Rds [4ms]
-#&gt; 
-#&gt; ⠙ cli-159588-449
-#&gt; ✔ E3.Rds [4ms]
-#&gt; 
-#&gt; ── Hashing completed! Total time spent: 0.1604221 secs ──
-#&gt; 
-#&gt; ⠙ cli-159588-549
-#&gt; ✔ A1.Rds [4ms]
-#&gt; 
-#&gt; ⠙ cli-159588-549
-#&gt; ✔ A2.Rds [4ms]
-#&gt; 
-#&gt; ⠙ cli-159588-549
+#&gt; ⠙ cli-159588-457
 #&gt; ✔ A3.Rds [5ms]
 #&gt; 
-#&gt; ⠙ cli-159588-549
+#&gt; ⠙ cli-159588-457
 #&gt; ✔ B1.Rds [4ms]
 #&gt; 
-#&gt; ⠙ cli-159588-549
-#&gt; ✔ B2.Rds [7ms]
+#&gt; ⠙ cli-159588-457
+#&gt; ✔ B2.Rds [5ms]
 #&gt; 
-#&gt; ⠙ cli-159588-549
-#&gt; ✔ B3.Rds [5ms]
+#&gt; ⠙ cli-159588-457
+#&gt; ✔ B3.Rds [4ms]
 #&gt; 
-#&gt; ⠙ cli-159588-549
+#&gt; ⠙ cli-159588-457
 #&gt; ✔ C1.Rds [4ms]
 #&gt; 
-#&gt; ⠙ cli-159588-549
+#&gt; ⠙ cli-159588-457
 #&gt; ✔ C1_duplicate.Rds [4ms]
 #&gt; 
-#&gt; ⠙ cli-159588-549
+#&gt; ⠙ cli-159588-457
 #&gt; ✔ C2.Rds [4ms]
 #&gt; 
-#&gt; ⠙ cli-159588-549
-#&gt; ✔ C3.Rds [4ms]
+#&gt; ⠙ cli-159588-457
+#&gt; ✔ C3.Rds [5ms]
 #&gt; 
-#&gt; ⠙ cli-159588-549
-#&gt; ✔ D1.Rds [4ms]
+#&gt; ⠙ cli-159588-457
+#&gt; ✔ D1.Rds [6ms]
 #&gt; 
-#&gt; ⠙ cli-159588-549
+#&gt; ⠙ cli-159588-457
 #&gt; ✔ D2.Rds [4ms]
 #&gt; 
-#&gt; ⠙ cli-159588-549
+#&gt; ⠙ cli-159588-457
 #&gt; ✔ D3.Rds [4ms]
 #&gt; 
-#&gt; ⠙ cli-159588-549
+#&gt; ⠙ cli-159588-457
 #&gt; ✔ E1.Rds [4ms]
 #&gt; 
-#&gt; ⠙ cli-159588-549
-#&gt; ✔ E2.Rds [4ms]
+#&gt; ⠙ cli-159588-457
+#&gt; ✔ E2.Rds [5ms]
 #&gt; 
-#&gt; ⠙ cli-159588-549
+#&gt; ⠙ cli-159588-457
 #&gt; ✔ E3.Rds [4ms]
 #&gt; 
-#&gt; ── Hashing completed! Total time spent: 0.152535 secs ──
+#&gt; ── Hashing completed! Total time spent: 0.1660891 secs ──
+#&gt; 
+#&gt; ⠙ cli-159588-557
+#&gt; ✔ A1.Rds [4ms]
+#&gt; 
+#&gt; ⠙ cli-159588-557
+#&gt; ✔ A2.Rds [5ms]
+#&gt; 
+#&gt; ⠙ cli-159588-557
+#&gt; ✔ A3.Rds [4ms]
+#&gt; 
+#&gt; ⠙ cli-159588-557
+#&gt; ✔ B1.Rds [7ms]
+#&gt; 
+#&gt; ⠙ cli-159588-557
+#&gt; ✔ B2.Rds [4ms]
+#&gt; 
+#&gt; ⠙ cli-159588-557
+#&gt; ✔ B3.Rds [4ms]
+#&gt; 
+#&gt; ⠙ cli-159588-557
+#&gt; ✔ C1.Rds [5ms]
+#&gt; 
+#&gt; ⠙ cli-159588-557
+#&gt; ✔ C1_duplicate.Rds [4ms]
+#&gt; 
+#&gt; ⠙ cli-159588-557
+#&gt; ✔ C2.Rds [4ms]
+#&gt; 
+#&gt; ⠙ cli-159588-557
+#&gt; ✔ C3.Rds [4ms]
+#&gt; 
+#&gt; ⠙ cli-159588-557
+#&gt; ✔ D1.Rds [4ms]
+#&gt; 
+#&gt; ⠙ cli-159588-557
+#&gt; ✔ D2.Rds [4ms]
+#&gt; 
+#&gt; ⠙ cli-159588-557
+#&gt; ✔ D3.Rds [4ms]
+#&gt; 
+#&gt; ⠙ cli-159588-557
+#&gt; ✔ E1.Rds [4ms]
+#&gt; 
+#&gt; ⠙ cli-159588-557
+#&gt; ✔ E2.Rds [4ms]
+#&gt; 
+#&gt; ⠙ cli-159588-557
+#&gt; ✔ E3.Rds [4ms]
+#&gt; 
+#&gt; ── Hashing completed! Total time spent: 0.1563208 secs ──
 #&gt; 
 #&gt; (←)Left directory structure:
-#&gt; C:/Users/wb621604/AppData/Local/Temp/Rtmpmg13ZH/left
+#&gt; C:/Users/wb621604/AppData/Local/Temp/RtmpspeU5x/left
 #&gt; ├── A
 #&gt; │   ├── A1.Rds
 #&gt; │   ├── A2.Rds
@@ -3377,7 +3377,7 @@ compare_directories(left,
 #&gt;     ├── E2.Rds
 #&gt;     └── E3.Rds
 #&gt; (→)Right directory structure:
-#&gt; C:/Users/wb621604/AppData/Local/Temp/Rtmpmg13ZH/right
+#&gt; C:/Users/wb621604/AppData/Local/Temp/RtmpspeU5x/right
 #&gt; ├── A
 #&gt; │   ├── A1.Rds
 #&gt; │   ├── A2.Rds
@@ -3400,8 +3400,8 @@ compare_directories(left,
 #&gt;     ├── E2.Rds
 #&gt;     └── E3.Rds
 #&gt; ── Synchronization Summary ─────────────────────────────────────────────────────
-#&gt; • Left Directory: &#39;C:/Users/wb621604/AppData/Local/Temp/Rtmpmg13ZH/left&#39;
-#&gt; • Right Directory: &#39;C:/Users/wb621604/AppData/Local/Temp/Rtmpmg13ZH/right&#39;
+#&gt; • Left Directory: &#39;C:/Users/wb621604/AppData/Local/Temp/RtmpspeU5x/left&#39;
+#&gt; • Right Directory: &#39;C:/Users/wb621604/AppData/Local/Temp/RtmpspeU5x/right&#39;
 #&gt; • Total Common Files: 16
 #&gt; • Total Non-common Files: 0
 #&gt; • Compare files by: content
@@ -3447,15 +3447,15 @@ and right directories, when compared by date</p>
 display_sync_status(sync_status_date$common_files,
                     left_path  = left,
                     right_path = right)</code></pre>
-<div class="datatables html-widget html-fill-item" id="htmlwidget-faf793aade4e2be8eac2" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-faf793aade4e2be8eac2">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],["/A/A1.Rds","/A/A2.Rds","/A/A3.Rds","/B/B1.Rds","/B/B2.Rds","/B/B3.Rds","/C/C1.Rds","/C/C1_duplicate.Rds","/C/C2.Rds","/C/C3.Rds","/D/D1.Rds","/D/D2.Rds","/D/D3.Rds","/E/E1.Rds","/E/E2.Rds","/E/E3.Rds"],["/A/A1.Rds","/A/A2.Rds","/A/A3.Rds","/B/B1.Rds","/B/B2.Rds","/B/B3.Rds","/C/C1.Rds","/C/C1_duplicate.Rds","/C/C2.Rds","/C/C3.Rds","/D/D1.Rds","/D/D2.Rds","/D/D3.Rds","/E/E1.Rds","/E/E2.Rds","/E/E3.Rds"],["2026-01-23T21:57:04Z","2026-01-23T21:57:07Z","2026-01-23T21:57:10Z","2026-01-23T21:57:04Z","2026-01-23T21:57:07Z","2026-01-23T21:57:10Z","2026-01-23T21:57:05Z","2026-01-23T21:57:05Z","2026-01-23T21:57:08Z","2026-01-23T21:57:10Z","2026-01-23T21:57:07Z","2026-01-23T21:57:10Z","2026-01-23T21:57:01Z","2026-01-23T21:56:57Z","2026-01-23T21:57:00Z","2026-01-23T21:57:01Z"],["2026-01-23T21:56:54Z","2026-01-23T21:56:57Z","2026-01-23T21:57:00Z","2026-01-23T21:57:05Z","2026-01-23T21:57:08Z","2026-01-23T21:57:00Z","2026-01-23T21:57:05Z","2026-01-23T21:56:55Z","2026-01-23T21:57:09Z","2026-01-23T21:57:11Z","2026-01-23T21:57:06Z","2026-01-23T21:57:09Z","2026-01-23T21:57:11Z","2026-01-23T21:57:07Z","2026-01-23T21:57:10Z","2026-01-23T21:57:11Z"],[true,true,true,false,false,true,false,true,false,false,true,true,false,false,false,false],[false,false,false,true,true,false,false,false,true,true,false,false,true,true,true,true],["newer in left, older in right dir","newer in left, older in right dir","newer in left, older in right dir","older in left, newer in right dir","older in left, newer in right dir","newer in left, older in right dir","same date","newer in left, older in right dir","older in left, newer in right dir","older in left, newer in right dir","newer in left, older in right dir","newer in left, older in right dir","older in left, newer in right dir","older in left, newer in right dir","older in left, newer in right dir","older in left, newer in right dir"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>path_left<\/th>\n      <th>path_right<\/th>\n      <th>modification_time_left<\/th>\n      <th>modification_time_right<\/th>\n      <th>is_new_left<\/th>\n      <th>is_new_right<\/th>\n      <th>sync_status<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"targets":[5,6],"createdCell":"function(td, cellData, rowData, row, col) {\n                            if (cellData === true) {\n                              $(td).css({'background-color': '#F8F4FF'});\n                            } else {\n                              $(td).css({'background-color': '#F0F8FF'});\n                            }\n                          }"},{"targets":7,"createdCell":"function(td, cellData, rowData, row, col) {\n                             if (cellData.includes('different content') ||\n                                 cellData.includes('same date') ||\n                                 cellData.includes('only in right')) {\n                              $(td).css({'background-color': '#a9def9'});\n                            } else {\n                              $(td).css({'background-color': '#e4c1f9'});\n                            }\n                          }"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"path_left","targets":1},{"name":"path_right","targets":2},{"name":"modification_time_left","targets":3},{"name":"modification_time_right","targets":4},{"name":"is_new_left","targets":5},{"name":"is_new_right","targets":6},{"name":"sync_status","targets":7}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.createdCell","options.columnDefs.1.createdCell"],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-a3eeeaf337a800166f22" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-a3eeeaf337a800166f22">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],["/A/A1.Rds","/A/A2.Rds","/A/A3.Rds","/B/B1.Rds","/B/B2.Rds","/B/B3.Rds","/C/C1.Rds","/C/C1_duplicate.Rds","/C/C2.Rds","/C/C3.Rds","/D/D1.Rds","/D/D2.Rds","/D/D3.Rds","/E/E1.Rds","/E/E2.Rds","/E/E3.Rds"],["/A/A1.Rds","/A/A2.Rds","/A/A3.Rds","/B/B1.Rds","/B/B2.Rds","/B/B3.Rds","/C/C1.Rds","/C/C1_duplicate.Rds","/C/C2.Rds","/C/C3.Rds","/D/D1.Rds","/D/D2.Rds","/D/D3.Rds","/E/E1.Rds","/E/E2.Rds","/E/E3.Rds"],["2026-04-13T21:21:27Z","2026-04-13T21:21:30Z","2026-04-13T21:21:33Z","2026-04-13T21:21:27Z","2026-04-13T21:21:30Z","2026-04-13T21:21:33Z","2026-04-13T21:21:28Z","2026-04-13T21:21:28Z","2026-04-13T21:21:31Z","2026-04-13T21:21:33Z","2026-04-13T21:21:30Z","2026-04-13T21:21:33Z","2026-04-13T21:21:24Z","2026-04-13T21:21:20Z","2026-04-13T21:21:23Z","2026-04-13T21:21:24Z"],["2026-04-13T21:21:17Z","2026-04-13T21:21:20Z","2026-04-13T21:21:23Z","2026-04-13T21:21:28Z","2026-04-13T21:21:31Z","2026-04-13T21:21:23Z","2026-04-13T21:21:28Z","2026-04-13T21:21:18Z","2026-04-13T21:21:32Z","2026-04-13T21:21:34Z","2026-04-13T21:21:29Z","2026-04-13T21:21:32Z","2026-04-13T21:21:34Z","2026-04-13T21:21:30Z","2026-04-13T21:21:33Z","2026-04-13T21:21:34Z"],[true,true,true,false,false,true,false,true,false,false,true,true,false,false,false,false],[false,false,false,true,true,false,false,false,true,true,false,false,true,true,true,true],["newer in left, older in right dir","newer in left, older in right dir","newer in left, older in right dir","older in left, newer in right dir","older in left, newer in right dir","newer in left, older in right dir","same date","newer in left, older in right dir","older in left, newer in right dir","older in left, newer in right dir","newer in left, older in right dir","newer in left, older in right dir","older in left, newer in right dir","older in left, newer in right dir","older in left, newer in right dir","older in left, newer in right dir"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>path_left<\/th>\n      <th>path_right<\/th>\n      <th>modification_time_left<\/th>\n      <th>modification_time_right<\/th>\n      <th>is_new_left<\/th>\n      <th>is_new_right<\/th>\n      <th>sync_status<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"targets":[5,6],"createdCell":"function(td, cellData, rowData, row, col) {\n                            if (cellData === true) {\n                              $(td).css({'background-color': '#F8F4FF'});\n                            } else {\n                              $(td).css({'background-color': '#F0F8FF'});\n                            }\n                          }"},{"targets":7,"createdCell":"function(td, cellData, rowData, row, col) {\n                             if (cellData.includes('different content') ||\n                                 cellData.includes('same date') ||\n                                 cellData.includes('only in right')) {\n                              $(td).css({'background-color': '#a9def9'});\n                            } else {\n                              $(td).css({'background-color': '#e4c1f9'});\n                            }\n                          }"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"path_left","targets":1},{"name":"path_right","targets":2},{"name":"modification_time_left","targets":3},{"name":"modification_time_right","targets":4},{"name":"is_new_left","targets":5},{"name":"is_new_right","targets":6},{"name":"sync_status","targets":7}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.createdCell","options.columnDefs.1.createdCell"],"jsHooks":[]}</script>
 <p>or let’s display the sync status of non common files:</p>
 <pre class="r"><code>
 display_sync_status(sync_status_date$non_common_files,
                     left_path  = left,
                     right_path = right)</code></pre>
-<div class="datatables html-widget html-fill-item" id="htmlwidget-1cef559d0e95e9bbc719" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-1cef559d0e95e9bbc719">{"x":{"filter":"none","vertical":false,"data":[[],[],[],[]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>path_left<\/th>\n      <th>path_right<\/th>\n      <th>sync_status<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"targets":[],"createdCell":"function(td, cellData, rowData, row, col) {\n                            if (cellData === true) {\n                              $(td).css({'background-color': '#F8F4FF'});\n                            } else {\n                              $(td).css({'background-color': '#F0F8FF'});\n                            }\n                          }"},{"targets":3,"createdCell":"function(td, cellData, rowData, row, col) {\n                             if (cellData.includes('different content') ||\n                                 cellData.includes('same date') ||\n                                 cellData.includes('only in right')) {\n                              $(td).css({'background-color': '#a9def9'});\n                            } else {\n                              $(td).css({'background-color': '#e4c1f9'});\n                            }\n                          }"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"path_left","targets":1},{"name":"path_right","targets":2},{"name":"sync_status","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.createdCell","options.columnDefs.1.createdCell"],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-3f78d60cfe3f6119462e" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-3f78d60cfe3f6119462e">{"x":{"filter":"none","vertical":false,"data":[[],[],[],[]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>path_left<\/th>\n      <th>path_right<\/th>\n      <th>sync_status<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"targets":[],"createdCell":"function(td, cellData, rowData, row, col) {\n                            if (cellData === true) {\n                              $(td).css({'background-color': '#F8F4FF'});\n                            } else {\n                              $(td).css({'background-color': '#F0F8FF'});\n                            }\n                          }"},{"targets":3,"createdCell":"function(td, cellData, rowData, row, col) {\n                             if (cellData.includes('different content') ||\n                                 cellData.includes('same date') ||\n                                 cellData.includes('only in right')) {\n                              $(td).css({'background-color': '#a9def9'});\n                            } else {\n                              $(td).css({'background-color': '#e4c1f9'});\n                            }\n                          }"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"path_left","targets":1},{"name":"path_right","targets":2},{"name":"sync_status","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.createdCell","options.columnDefs.1.createdCell"],"jsHooks":[]}</script>
 </div>
 <div id="step-3-synchronize-directories" class="section level3">
 <h3>Step 3: Synchronize directories</h3>
@@ -3496,6 +3496,19 @@ sync_status &lt;- compare_directories(left,
 
 # Synchronize directories 
 full_asym_sync_to_right(sync_status = sync_status)
+#&gt; These files will be COPIED (overwriting if present) to right 
+#&gt; 
+#&gt; 
+#&gt; |Files               |Action       |
+#&gt; |:-------------------|:------------|
+#&gt; |/A/A1.Rds           |To be copied |
+#&gt; |/A/A2.Rds           |To be copied |
+#&gt; |/A/A3.Rds           |To be copied |
+#&gt; |/B/B3.Rds           |To be copied |
+#&gt; |/C/C1_duplicate.Rds |To be copied |
+#&gt; |/D/D1.Rds           |To be copied |
+#&gt; |/D/D2.Rds           |To be copied |
+#&gt; Do you want to proceed? Type your answer (Yes/no/cancel) 
 #&gt; ✔ synchronized</code></pre>
 </div>
 </div>

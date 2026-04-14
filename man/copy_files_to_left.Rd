@@ -4,7 +4,13 @@
 \alias{copy_files_to_left}
 \title{Copy files from right directory to left directory}
 \usage{
-copy_files_to_left(left_dir, right_dir, files_to_copy, recurse = TRUE)
+copy_files_to_left(
+  left_dir,
+  right_dir,
+  files_to_copy,
+  recurse = TRUE,
+  overwrite = TRUE
+)
 }
 \arguments{
 \item{left_dir}{Path of the left (destination) directory.}
@@ -18,9 +24,16 @@ copy_files_to_left(left_dir, right_dir, files_to_copy, recurse = TRUE)
 \item If TRUE: Files are copied into corresponding subdirectories in the left directory. If a subdirectory doesn't exist in the left directory, it will be created.
 \item If FALSE: Files are copied to the top level of the left directory.
 }}
+
+\item{overwrite}{Logical, default is TRUE. If TRUE, existing files at the
+destination are overwritten. If FALSE, existing destination files are
+preserved and the copy is skipped.}
 }
 \value{
-Invisible TRUE upon successful completion of the file copying process.
+Invisible TRUE. Aborts with an error if the destination directory
+is not writable (VUL-27). If individual file copies fail, a warning is
+issued listing all failed files and copying continues for the remainder
+(VUL-24/VUL-26).
 }
 \description{
 This function copies files from a right (source) directory to a left (destination) directory based on a provided data frame containing file paths and synchronization status.

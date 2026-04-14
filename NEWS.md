@@ -1,4 +1,59 @@
-# syncdr 0.1.1
+# syncdr 0.1.2
+
+## Security and robustness improvements
+
+This release improves input validation, path handling, and error recovery across
+synchronization functions following an internal review. No new user-facing features
+are added.
+
+## Path handling improvements
+
+- Improved internal path normalization and relative path computation to ensure
+  consistent behavior across platforms and working directories.
+- Reduced risk of incorrect path resolution when directory names contain special
+  characters.
+
+## Input validation
+
+- Added stricter validation for directory inputs to ensure they are valid, existing
+  directories.
+- Prevented use of identical or nested directories in synchronization operations.
+- Added validation to ensure sync status objects are of the expected class.
+- Added validation to prevent backup directories from overlapping with
+  synchronization targets.
+
+## Backup and recovery improvements
+
+- Centralized backup handling to improve consistency across synchronization
+  functions.
+- Improved verification of backup completion before modifications proceed.
+- Enhanced backup directory naming to avoid overwriting previous backups.
+- Added warning when temporary directories are used for backups.
+
+## Error handling improvements
+
+- Improved handling of file permission issues with early checks before file
+  operations.
+- Enhanced resilience to individual file copy or deletion failures.
+- Improved handling of files that change during synchronization.
+
+## Staleness detection
+
+- Added timestamp tracking to synchronization status objects.
+- Added warning when synchronization results may be outdated (configurable via
+  `options(syncdr.staleness_threshold_secs)`).
+
+## API changes
+
+- Default value of `force` changed from `TRUE` to `FALSE` in all sync functions.
+- Default value of `delete_in_right` changed from `TRUE` to `FALSE`.
+- `overwrite` is now an explicit user-controllable argument (default `TRUE`).
+
+## Documentation
+
+- Improved documentation of synchronization parameters.
+- Added package-level note on concurrency limitations and recommended use of file
+  locking packages.
 
 # syncdr 0.1.0
 

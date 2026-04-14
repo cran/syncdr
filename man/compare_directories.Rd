@@ -33,6 +33,8 @@ A list of class "syncdr_status" containing the following elements:
 \item Common files: Paths and synchronization status of files present in both directories.
 \item Path of the left directory.
 \item Path of the right directory.
+\item \code{created_at}: A \code{POSIXct} timestamp recording when the comparison was performed,
+used by sync functions to detect stale results.
 }
 }
 \description{

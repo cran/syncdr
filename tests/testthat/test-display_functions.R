@@ -67,3 +67,32 @@ test_that("display_file_actions prints correct table", {
   output_delete <- capture.output(syncdr:::display_file_actions(df, directory = tmp, action = "delete"))
   expect_true(any(grepl("To be deleted", output_delete)))
 })
+
+# VUL-32: display_dir_tree passes recurse to fs::dir_tree ----
+test_that("display_dir_tree passes recurse=FALSE to fs::dir_tree", {
+  skip_on_cran()
+
+  tmp_left  <- withr::local_tempdir()
+  tmp_right <- withr::local_tempdir()
+
+  subdir <- file.path(tmp_left, "sub")
+  dir.create(subdir)
+  writeLines("nested", file.path(subdir, "nested.txt"))
+  writeLines("toplevel", file.path(tmp_left, "top.txt"))
+
+  called_args <- list()
+  with_mocked_bindings(
+    dir_tree = function(path, recurse = TRUE, ...) {
+      called_args[[length(called_args) + 1L]] <<- list(path = path, recurse = recurse)
+      invisible(NULL)
+    },
+    .package = "fs",
+    {
+      display_dir_tree(path_left = tmp_left, path_right = tmp_right, recurse = FALSE)
+    }
+  )
+
+  # both calls should have received recurse = FALSE
+  recurse_vals <- vapply(called_args, function(x) x$recurse, logical(1))
+  expect_true(all(!recurse_vals))
+})

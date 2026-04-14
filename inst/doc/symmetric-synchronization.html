@@ -345,7 +345,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co"># Create .syncdrenv</span></span>
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>.syncdrenv <span class="ot">=</span> <span class="fu">toy_dirs</span>()</span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt; ■■■■■■■■■                         27% | ETA:  8s</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt; ■■■■■■■■■■■■■■■                   47% | ETA:  5s</span></span>
 <span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■               60% | ETA:  5s</span></span>
 <span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a></span>
 <span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co"># Get left and right directories&#39; paths </span></span>
@@ -478,7 +478,33 @@ the synchronization.</p>
 <span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
 <span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co"># Providing sync_status object</span></span>
 <span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="fu">full_symmetric_sync</span>(<span class="at">sync_status =</span> sync_status)</span>
-<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt; ✔ synchronized</span></span></code></pre></div>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt; These files will be COPIED (overwriting if present) to RIGHT </span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt; |Files     |Action       |</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; |:---------|:------------|</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt; |/A/A1.Rds |To be copied |</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&gt; |/A/A2.Rds |To be copied |</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; |/A/A3.Rds |To be copied |</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; |/B/B3.Rds |To be copied |</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co">#&gt; |/D/D1.Rds |To be copied |</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt; |/D/D2.Rds |To be copied |</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; These files will be COPIED (overwriting if present) to LEFT </span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt; |Files               |Action       |</span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; |:-------------------|:------------|</span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; |/B/B1.Rds           |To be copied |</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; |/B/B2.Rds           |To be copied |</span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; |/C/C1_duplicate.Rds |To be copied |</span></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co">#&gt; |/C/C2.Rds           |To be copied |</span></span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="co">#&gt; |/C/C3.Rds           |To be copied |</span></span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co">#&gt; |/D/D3.Rds           |To be copied |</span></span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co">#&gt; |/E/E1.Rds           |To be copied |</span></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co">#&gt; |/E/E2.Rds           |To be copied |</span></span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="co">#&gt; |/E/E3.Rds           |To be copied |</span></span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="co">#&gt; Do you want to proceed? Type your answer (Yes/no/cancel) </span></span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co">#&gt; ✔ synchronized</span></span></code></pre></div>
 <p><strong>When comparing directories by date only:</strong></p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>sync_status <span class="ot">&lt;-</span> <span class="fu">compare_directories</span>(<span class="at">left_path  =</span> left,</span>
@@ -487,14 +513,16 @@ the synchronization.</p>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co"># Example with left and right paths </span></span>
 <span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="fu">full_symmetric_sync</span>(<span class="at">left_path =</span> left,</span>
 <span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>                    <span class="at">right_path =</span> right)</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; ✔ synchronized</span></span></code></pre></div>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; Do you want to proceed? Type your answer (Yes/no/cancel) </span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; ✔ synchronized</span></span></code></pre></div>
 <p><strong>2 - Partial symmetric synchronization:</strong></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>sync_status <span class="ot">&lt;-</span> <span class="fu">compare_directories</span>(<span class="at">left_path  =</span> left,</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>                                   <span class="at">right_path =</span> right)</span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="fu">partial_symmetric_sync_common_files</span>(<span class="at">sync_status =</span> sync_status)</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; ✔ synchronized</span></span></code></pre></div>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; Do you want to proceed? Type your answer (Yes/no/cancel) </span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; ✔ synchronized</span></span></code></pre></div>
 </div>
 </div>
 

@@ -28,6 +28,8 @@
 #'   - Common files: Paths and synchronization status of files present in both directories.
 #'   - Path of the left directory.
 #'   - Path of the right directory.
+#'   - `created_at`: A `POSIXct` timestamp recording when the comparison was performed,
+#'     used by sync functions to detect stale results.
 #'
 #' @export
 #' @examples
@@ -47,11 +49,38 @@ compare_directories <- function(left_path,
                                 verbose    = getOption("syncdr.verbose")){
                                 #short_paths = getOption("syncdr.short_paths")) {
 
-  # Check directory paths
-  stopifnot(exprs = {
-    fs::dir_exists(left_path)
-    fs::dir_exists(right_path)
-  })
+  # VUL-11: validate type/length/NA/empty before any fs call
+  validate_path_arg(left_path,  "left_path")
+  validate_path_arg(right_path, "right_path")
+
+  # VUL-05: reject identical paths (self-sync)
+  if (identical(fs::path_norm(left_path), fs::path_norm(right_path))) {
+    cli::cli_abort(
+      c(
+        "{.arg left_path} and {.arg right_path} point to the same directory.",
+        "x" = "Self-synchronization would corrupt the directory.",
+        "i" = "Provide two distinct directories."
+      )
+    )
+  }
+
+  # VUL-06: reject nested paths (one is an ancestor/descendant of the other)
+  left_norm  <- fs::path_norm(left_path)
+  right_norm <- fs::path_norm(right_path)
+  if (startsWith(right_norm, paste0(left_norm, "/")) ||
+      startsWith(left_norm,  paste0(right_norm, "/"))) {
+    cli::cli_abort(
+      c(
+        "One of the paths is nested inside the other.",
+        "x" = "{.path {left_path}} vs {.path {right_path}}",
+        "i" = "Nested synchronization can cause recursive copies and data loss."
+      )
+    )
+  }
+
+  # VUL-30: normalise to absolute paths so sync_status is portable
+  left_path  <- as.character(fs::path_abs(left_path))
+  right_path <- as.character(fs::path_abs(right_path))
 
   # Get info on directory 1, i.e. left
   info_left <- directory_info(dir     = left_path,
@@ -124,7 +153,8 @@ compare_directories <- function(left_path,
     common_files     = common_files,
     non_common_files = non_common_files,
     left_path        = left_path,
-    right_path       = right_path
+    right_path       = right_path,
+    created_at       = Sys.time()   # VUL-22: timestamp for staleness detection
   )
 
   # Display directories structure if verbose is TRUE

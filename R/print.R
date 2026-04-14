@@ -91,6 +91,9 @@ print.syncdr_status <- function(x, ...) {
   invisible(x)
 }
 
+# Use fixed = TRUE and fs::path_norm() so that root paths containing regex
+# metacharacters (e.g. 'user.name', 'data (copy)') are treated as literals.
 remove_root <- \(root_path, new_path) {
-  gsub(fs::path_dir(root_path), "", new_path)
+  root_norm <- fs::path_norm(fs::path_dir(root_path))
+  gsub(root_norm, "", fs::path_norm(new_path), fixed = TRUE)
 }

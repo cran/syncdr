@@ -82,12 +82,12 @@ test_that("print formats common files correctly when comparing by content only",
 test_that("remove_root removes directory root correctly", {
 
   expect_equal(
-    remove_root("/tmp/left", "/tmp/left/a/b.txt"),
+    as.character(remove_root("/tmp/left", "/tmp/left/a/b.txt")),
     "/left/a/b.txt"
   )
 
   expect_equal(
-    remove_root("/tmp/right", "/tmp/right/file.txt"),
+    as.character(remove_root("/tmp/right", "/tmp/right/file.txt")),
     "/right/file.txt"
   )
 })
